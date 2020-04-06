@@ -17,6 +17,7 @@ const Part = (props) => {
   )
 }
 
+
 const Content = (props) => {
   return (
     <div>
@@ -24,13 +25,14 @@ const Content = (props) => {
       <Part part={props.part2} exercise={props.exercise2} />
       <Part part={props.part3} exercise={props.exercise3} />
     </div>
-
+    
   )
 }
 
 const Total = (props) => {
   return (
     <p>Number of exercises { props.exercises1 + props.exercises2 + props.exercises3 } </p>
+
   )
 }
 
@@ -54,4 +56,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root')) 
+ReactDOM.render(<App />, document.getElementById('root'))
