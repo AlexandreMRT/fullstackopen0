@@ -25,7 +25,7 @@ const Content = (props) => {
       <Part part={props.part2} exercise={props.exercise2} />
       <Part part={props.part3} exercise={props.exercise3} />
     </div>
-    
+
   )
 }
 
@@ -55,4 +55,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root')) 
