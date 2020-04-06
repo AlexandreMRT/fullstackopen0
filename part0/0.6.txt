@@ -1,0 +1,11 @@
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over browser:
+The content-type header tells the server that the data included its a JSON
+end note
+server-->browser: HTTP status code 201 Created
+
+note over server:
+the server response its also a JSON
+ {"message":"note created"}
+
+end note
