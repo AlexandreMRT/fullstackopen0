@@ -24,10 +24,24 @@ const App = () => {
     )
   }
 
-  const Statistics = ({ text, value }) => {
+  const DisplayVotes = ( { text, value }) => {
+    return (
+      <div>{text} {value} </div>
+    )
+  }
+
+  const Statistics = ({ good, neutral, bad }) => {
+    const all = good + neutral + bad
+    const average = ((good - bad) / all).toFixed(2)
+    const positive = ((good / all) * 100).toFixed(2)
     return (
       <div>
-        {text} {value}
+        <DisplayVotes text='good' value={good} />
+        <DisplayVotes text='neutral' value={neutral} />
+        <DisplayVotes text='bad' value={bad} />
+        <DisplayVotes text='all' value={all} />
+        <DisplayVotes text='average' value={average} />
+        <DisplayVotes text='positive' value={positive} />
       </div>
     )
   }
@@ -40,7 +54,6 @@ const App = () => {
 
   const Title = ( { text }) => (<h1>{ text }</h1>)
 
-
   return (
     <div>
       <Title text='Give Feedback'/>
@@ -48,9 +61,7 @@ const App = () => {
       <Button onClick={handleNeutralVote} text='Neutral' />
       <Button onClick={handleBadVote} text='Bad' />
       <Title text='Statistics' />
-      <Statistics text='Good' value={good} />
-      <Statistics text='Neutral' value={neutral} />
-      <Statistics text='Bad' value={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
