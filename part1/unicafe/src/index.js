@@ -24,28 +24,33 @@ const App = () => {
     )
   }
 
-  const DisplayVotes = ( { text, value }) => {
+  const Statistic = ( { text, value }) => {
     return (
-      <div>{text} {value} </div>
+          <tr>
+            <td>{ text }</td>
+            <td>{ value }</td>
+          </tr>
     )
   }
 
   const Statistics = ({ good, neutral, bad }) => {
     const all = good + neutral + bad
     const average = ((good - bad) / all).toFixed(2)
-    const positive = ((good / all) * 100).toFixed(2)
-    if (all == 0) {
+    const positive = ((good / all) * 100).toFixed(2) + '%'
+    if (all === 0) {
       return <div><p>No feedback given</p></div>
     }
     return (
-      <div>
-        <DisplayVotes text='good' value={good} />
-        <DisplayVotes text='neutral' value={neutral} />
-        <DisplayVotes text='bad' value={bad} />
-        <DisplayVotes text='all' value={all} />
-        <DisplayVotes text='average' value={average} />
-        <DisplayVotes text='positive' value={positive} />
-      </div>
+      <table>
+        <tbody>
+          <Statistic text='good' value={good} />
+          <Statistic text='neutral' value={neutral} />
+          <Statistic text='bad' value={bad} />
+          <Statistic text='all' value={all} />
+          <Statistic text='average' value={average} />
+          <Statistic text='positive' value={positive} />
+        </tbody>
+      </table>
     )
   }
 
