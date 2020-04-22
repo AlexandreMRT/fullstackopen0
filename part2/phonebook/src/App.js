@@ -4,24 +4,36 @@ import Person from './Components/Person';
 const App = () => {
   const [ persons, setPersons ] = useState(
     [
-      { name: 'Arto Hellas', id: 'Arto Hellas' }
+      {
+        name: 'Arto Hellas',
+        id: 'Arto Hellas',
+        phone: '040-1234567'
+
+       }
     ]
   )
   const [ newName, setNewName ] = useState('')
+
+  const [ newPhone, setNewPhone ] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
 
     const nameObject = {
       name: newName,
-      id: newName
+      id: newName,
+      phone: newPhone
     }
     persons.some(person => person.name === newName) ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(nameObject))
     setNewName('')
+    setNewPhone('')
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+  const handlePhoneChange = (event) => {
+    setNewPhone(event.target.value)
   }
 
   return (
@@ -32,6 +44,12 @@ const App = () => {
           name: <input 
           value={newName} 
           onChange={handleNameChange}
+           />
+        </div>
+        <div>
+          number: <input
+          value={newPhone}
+          onChange={handlePhoneChange}
            />
         </div>
         <div>
