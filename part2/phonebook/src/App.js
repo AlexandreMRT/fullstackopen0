@@ -1,67 +1,76 @@
 import React, { useState } from 'react'
-import Person from './Components/Person';
+import Persons from './Components/Persons';
+import Filter from './Components/Filter';
 
-const App = () => {
-  const [ persons, setPersons ] = useState(
-    [
-      {
-        name: 'Arto Hellas',
-        id: 'Arto Hellas',
-        phone: '040-1234567'
 
-       }
-    ]
-  )
-  const [ newName, setNewName ] = useState('')
-
-  const [ newPhone, setNewPhone ] = useState('')
-
-  const addPerson = (event) => {
-    event.preventDefault()
-
-    const nameObject = {
-      name: newName,
-      id: newName,
-      phone: newPhone
-    }
-    persons.some(person => person.name === newName) ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewPhone('')
-  }
-
-  const handleNameChange = (event) => {
-    setNewName(event.target.value)
-  }
-  const handlePhoneChange = (event) => {
-    setNewPhone(event.target.value)
-  }
-
+const Form = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
-    <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
+    <form onSubmit={addPerson}>
         <div>
-          name: <input 
-          value={newName} 
+          name: <input
+          value={newName}
           onChange={handleNameChange}
            />
         </div>
         <div>
           number: <input
-          value={newPhone}
-          onChange={handlePhoneChange}
+          value={newNumber}
+          onChange={handleNumberChange}
            />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
+  )
+}
+
+const App = () => {
+  const [ persons, setPersons ] = useState(
+    [
+      { name: 'Arto Hellas', number: '040-123456' }
+    ]
+  )
+  const [ newName, setNewName ] = useState('')
+
+  const [ newNumber, setNewNumber ] = useState('')
+
+  const [ filter, setFilter ] = useState('')
+
+  const peopleToShow = (persons.some(person => person.name.toUpperCase() === filter.toUpperCase()) ? persons.filter(person => person.name.toUpperCase() === filter.toUpperCase()) : persons)
+
+
+  const addPerson = (event) => {
+    event.preventDefault()
+
+    const nameObject = {
+      name: newName,
+      number: newNumber
+    }
+    persons.some(person => person.name === newName) ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(nameObject))
+    setNewName('')
+    setNewNumber('')
+  }
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+  const HandleFilterChange = (event) => {
+    setFilter(event.target.value)
+  }
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <Filter filter={filter} HandleFilterChange={HandleFilterChange} />
+      <h2>Add a new</h2>
+      <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <div>
-        {persons.map(person => 
-          <Person key={person.id} person={person} />
-        )}
-      </div>
+      <Persons persons={peopleToShow} />
+
     </div>
   )
 }
