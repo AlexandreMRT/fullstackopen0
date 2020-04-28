@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const Person = ({ person }) => {
   return (
-    <p>{person.name}</p>
+    <p>{person.name} {person.number} </p>
   )
 }
 
