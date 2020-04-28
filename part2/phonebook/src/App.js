@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './Components/Persons';
 import Filter from './Components/Filter';
-
+import axios from 'axios';
 
 const Form = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
@@ -26,19 +26,22 @@ const Form = ({ addPerson, newName, handleNameChange, newNumber, handleNumberCha
 }
 
 const App = () => {
-  const [ persons, setPersons ] = useState(
-    [
-      { name: 'Arto Hellas', number: '040-123456' }
-    ]
-  )
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
-
   const [ newNumber, setNewNumber ] = useState('')
-
   const [ filter, setFilter ] = useState('')
-
   const peopleToShow = (persons.some(person => person.name.toUpperCase() === filter.toUpperCase()) ? persons.filter(person => person.name.toUpperCase() === filter.toUpperCase()) : persons)
 
+  useEffect(() => {
+    console.log('effect :>> ')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fullfiled :>> ');
+        setPersons(response.data)
+      })
+  }, [])
+  console.log('render :>> ',persons.length, 'persons');
 
   const addPerson = (event) => {
     event.preventDefault()
