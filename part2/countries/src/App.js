@@ -8,6 +8,8 @@ function App() {
   const [countries, setCountries] = useState([])
   const countriesToShow = (countries.filter(country => country.name.toUpperCase().includes(filter.toUpperCase())))
 
+  console.log('filter :>> ', filter);
+
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
@@ -23,7 +25,7 @@ function App() {
   return (
     <div>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <Countries countries={countriesToShow} />
+      <Countries countries={countriesToShow} setFilter={setFilter} />
     </div>
   );
 }
