@@ -1,6 +1,6 @@
 import React from 'react'
 import Languages from './Languages';
-import Flag from './Flag';
+import CountryWeather from './CapitalWeather';
 
 const CountryShow = ({ country }) => {
   return (
@@ -10,7 +10,8 @@ const CountryShow = ({ country }) => {
       <p>population {country.population}</p>
       <h3>languages</h3>
       <Languages languages={country.languages} />
-      <Flag country={country} />
+      <img src={country.flag} height="100" width="100" alt={country.name} />
+      <CountryWeather capital={country.capital} />
     </div>
   )
 }
