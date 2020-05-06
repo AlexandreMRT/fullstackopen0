@@ -40,7 +40,6 @@ const App = () => {
       })
   }, [])
 
-
   const addPerson = (event) => {
     event.preventDefault()
 
@@ -49,14 +48,32 @@ const App = () => {
       number: newNumber
     }
 
-    personService
-      .create(nameObject)
-      .then(response => {
-        persons.some(person => person.name === newName) ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNumber('')
-    })
+    const foundPerson = (persons.find(person => person.name === newName))
 
+    if (foundPerson) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the older number with a new one ?`)) {
+
+        personService
+          .update(foundPerson.id, nameObject)
+          .then(response => {
+            setPersons(persons.map(person => person.id !== foundPerson.id ? person : response.data))
+          })
+          .catch(error => {
+            alert(
+              `the note '${foundPerson.content}' was already deleted from server`
+            )
+            setPersons(persons.filter(n => n.id !== foundPerson.id))
+          })
+        }
+    } else {
+      personService
+        .create(nameObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
+      }
+      setNewName('')
+      setNewNumber('')
   }
 
   const handleNameChange = (event) => {
@@ -76,7 +93,7 @@ const App = () => {
       <h2>Add a new</h2>
       <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={peopleToShow} />
+      <Persons persons={peopleToShow} setPersons={setPersons} />
 
     </div>
   )
