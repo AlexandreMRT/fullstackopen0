@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Persons from './Components/Persons';
 import Filter from './Components/Filter';
-import axios from 'axios';
+import personService from './Services/personService';
 
 const Form = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
@@ -30,18 +30,15 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
-  const peopleToShow = (persons.some(person => person.name.toUpperCase() === filter.toUpperCase()) ? persons.filter(person => person.name.toUpperCase() === filter.toUpperCase()) : persons)
+  const peopleToShow = (persons.filter(person => person.name.toUpperCase().includes(filter.toUpperCase())))
 
   useEffect(() => {
-    console.log('effect :>> ')
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        console.log('promise fullfiled :>> ');
         setPersons(response.data)
       })
   }, [])
-  console.log('render :>> ',persons.length, 'persons');
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -50,9 +47,33 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    persons.some(person => person.name === newName) ? alert(`${newName} is already added to phonebook`) : setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('')
+
+    const foundPerson = (persons.find(person => person.name === newName))
+
+    if (foundPerson) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the older number with a new one ?`)) {
+
+        personService
+          .update(foundPerson.id, nameObject)
+          .then(response => {
+            setPersons(persons.map(person => person.id !== foundPerson.id ? person : response.data))
+          })
+          .catch(error => {
+            alert(
+              `the note '${foundPerson.content}' was already deleted from server`
+            )
+            setPersons(persons.filter(n => n.id !== foundPerson.id))
+          })
+        }
+    } else {
+      personService
+        .create(nameObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
+      }
+      setNewName('')
+      setNewNumber('')
   }
 
   const handleNameChange = (event) => {
@@ -72,7 +93,7 @@ const App = () => {
       <h2>Add a new</h2>
       <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={peopleToShow} />
+      <Persons persons={peopleToShow} setPersons={setPersons} />
 
     </div>
   )
