@@ -13,9 +13,11 @@ const CapitalWeather = ({ capital }) => {
 
   useEffect(() => {
     axios.get('http://api.weatherstack.com/current', {params})
-         .then(response => response.data.current)
-         .then(response => setApiReponse(response))
+    .then(response => response.data.current)
+    .then(response => setApiReponse(response))
   })
+
+  console.log('apiResponse :>> ', apiResponse);
 
   return (
     <div>
@@ -23,8 +25,6 @@ const CapitalWeather = ({ capital }) => {
       <p>temperature: {apiResponse.temperature} Celsius</p>
       <img alt={capital.name} src={apiResponse.weather_icons}></img>
       <p>wind: {apiResponse.wind_speed} mph direction {apiResponse.wind_dir} </p>
-
-
     </div>
   )
 }
