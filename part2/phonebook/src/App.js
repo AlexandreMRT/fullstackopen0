@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import './index.css'
 import Persons from './Components/Persons';
 import Filter from './Components/Filter';
+import Notification from './Components/Notification';
 import personService from './Services/personService';
 
 const Form = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
@@ -31,6 +33,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
   const peopleToShow = (persons.filter(person => person.name.toUpperCase().includes(filter.toUpperCase())))
+  const [addMessage, setAddMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -72,6 +75,14 @@ const App = () => {
           setPersons(persons.concat(response.data))
         })
       }
+
+      setAddMessage(
+        `Added '${newName}' `
+      )
+      setTimeout(() => {
+        setAddMessage(null)
+      }, 5000)
+
       setNewName('')
       setNewNumber('')
   }
@@ -89,6 +100,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={addMessage} />
       <Filter filter={filter} HandleFilterChange={HandleFilterChange} />
       <h2>Add a new</h2>
       <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
