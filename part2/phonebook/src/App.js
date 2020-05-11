@@ -33,7 +33,8 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
   const peopleToShow = (persons.filter(person => person.name.toUpperCase().includes(filter.toUpperCase())))
-  const [addMessage, setAddMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -60,10 +61,14 @@ const App = () => {
           .update(foundPerson.id, nameObject)
           .then(response => {
             setPersons(persons.map(person => person.id !== foundPerson.id ? person : response.data))
+            setMessage(`Updated '${newName}' `)
+            setTimeout(() => {
+              setMessage(null)
+            }, 3000)
           })
           .catch(error => {
-            alert(
-              `the note '${foundPerson.content}' was already deleted from server`
+            setErrorMessage(
+              `The note '${foundPerson.name}' was already deleted from server`
             )
             setPersons(persons.filter(n => n.id !== foundPerson.id))
           })
@@ -73,16 +78,12 @@ const App = () => {
         .create(nameObject)
         .then(response => {
           setPersons(persons.concat(response.data))
+          setMessage(`Added '${newName}' `)
+          setTimeout(() => {
+            setMessage(null)
+          }, 3000)
         })
       }
-
-      setAddMessage(
-        `Added '${newName}' `
-      )
-      setTimeout(() => {
-        setAddMessage(null)
-      }, 5000)
-
       setNewName('')
       setNewNumber('')
   }
@@ -100,13 +101,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={addMessage} />
+      <Notification message={errorMessage} type={"error"} />
+      <Notification message={message} type={"succes"} />
       <Filter filter={filter} HandleFilterChange={HandleFilterChange} />
       <h2>Add a new</h2>
       <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={peopleToShow} setPersons={setPersons} />
-
+      <Persons persons={peopleToShow} setPersons={setPersons} setErrorMessage={setErrorMessage} />
     </div>
   )
 }
