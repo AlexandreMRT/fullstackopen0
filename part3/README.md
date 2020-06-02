@@ -1,1 +1,1 @@
-Application URL: https://peaceful-ravine-65243.herokuapp.com/
+Application URL: https://alexphonebook.herokuapp.com/
