@@ -19,39 +19,11 @@ app.use(express.static('build'))
 
 app.use(cors())
 
-let persons = [
-  {
-    "id": 1,
-    "name": "Arto Hellas",
-    "number": "040-123456"
-  },
-  {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523"
-  },
-  {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345"
-  },
-  {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122"
-  },
-  {
-    "id": 5,
-    "name": "Alexandre",
-    "number": "11 988890105"
-  }
-]
+// const generateId = () => {
+//   const id  = Math.random() * (10000 - persons.length) + persons.length
 
-const generateId = () => {
-  const id  = Math.random() * (10000 - persons.length) + persons.length
-
-  return Math.floor(id)
-}
+//   return Math.floor(id)
+// }
 
 app.get('/api/persons', (req, res) => {
   Person.find({}).then(persons => {
@@ -90,26 +62,26 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  Person.findById(req.params.id).then(person => {
-    res.json(person)
-  })
+  Person.findById(req.params.id)
+    .then(person => {
+      if (person) {
+        res.json(person)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(400).send({ error: 'malformatted id' })
+    })
 })
 
-// app.get('/api/persons/:id', (req, res) => {
-//   const id = Number(req.params.id)
-//   const person = persons.find(person => person.id === id)
-//   if (person) {
-//     res.json(person)
-//   } else {
-//     res.status(404).end()
-//   }
-// })
-
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
-
-  res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.listen(PORT, () => {
