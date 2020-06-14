@@ -57,8 +57,10 @@ app.post('/api/persons', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  res.send(`Phonebook has info for ${persons.length} people <br />
-  ${new Date()}`)
+  Person.collection.countDocuments({}, function(error, people) {
+    res.send(`Phonebook has info for ${people} people <br />
+    ${new Date()}`)
+  })
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
