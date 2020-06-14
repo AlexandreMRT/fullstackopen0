@@ -57,8 +57,10 @@ app.post('/api/persons', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  res.send(`Phonebook has info for ${persons.length} people <br />
-  ${new Date()}`)
+  Person.collection.countDocuments({}, function(error, people) {
+    res.send(`Phonebook has info for ${people} people <br />
+    ${new Date()}`)
+  })
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
@@ -69,6 +71,21 @@ app.get('/api/persons/:id', (req, res, next) => {
       } else {
         res.status(404).end()
       }
+    })
+    .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+  const body = req.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then(updatedPerson => {
+      res.json(updatedPerson)
     })
     .catch(error => next(error))
 })
