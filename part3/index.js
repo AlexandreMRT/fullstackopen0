@@ -4,6 +4,7 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
+const { query } = require('express')
 
 const PORT = process.env.PORT
 
@@ -75,7 +76,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     number: body.number,
   }
 
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
