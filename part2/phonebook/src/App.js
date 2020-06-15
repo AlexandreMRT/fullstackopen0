@@ -68,8 +68,11 @@ const App = () => {
           })
           .catch(error => {
             setErrorMessage(
-              `The note '${foundPerson.name}' was already deleted from server`
+              `${error.response.data.error}`
             )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 3000)
             setPersons(persons.filter(n => n.id !== foundPerson.id))
           })
         }
@@ -81,6 +84,14 @@ const App = () => {
           setMessage(`Added '${newName}' `)
           setTimeout(() => {
             setMessage(null)
+          }, 3000)
+        })
+        .catch(error => {
+          setErrorMessage(
+            `${error.response.data.error}`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
           }, 3000)
         })
       }
