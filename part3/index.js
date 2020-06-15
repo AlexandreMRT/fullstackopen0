@@ -19,12 +19,6 @@ app.use(express.static('build'))
 
 app.use(cors())
 
-// const generateId = () => {
-//   const id  = Math.random() * (10000 - persons.length) + persons.length
-
-//   return Math.floor(id)
-// }
-
 app.get('/api/persons', (req, res) => {
   Person.find({}).then(persons => {
     res.json(persons)
@@ -39,22 +33,19 @@ app.post('/api/persons', (req, res, next) => {
       error: 'name and/or number missing'
     })
   }
-  // TO DO else if to get all people inside the database and check
-  // } else if (persons.find(person => person.name === body.name)) {
-  //   return res.status(400).json({
-  //     error: "Name must be unique"
-  //   })
-  // }
 
   const person = new Person({
     name: req.body.name,
     number: req.body.number,
   })
 
-  person.save().then(savedPerson => {
-    res.json(savedPerson)
-  })
-  .catch(error => next(error))
+  person
+    .save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      res.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (req, res) => {
