@@ -4,6 +4,7 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
+const { query } = require('express')
 
 const PORT = process.env.PORT
 
@@ -19,19 +20,13 @@ app.use(express.static('build'))
 
 app.use(cors())
 
-// const generateId = () => {
-//   const id  = Math.random() * (10000 - persons.length) + persons.length
-
-//   return Math.floor(id)
-// }
-
 app.get('/api/persons', (req, res) => {
   Person.find({}).then(persons => {
     res.json(persons)
   })
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.name ||  !body.number) {
@@ -39,21 +34,19 @@ app.post('/api/persons', (req, res) => {
       error: 'name and/or number missing'
     })
   }
-  // TO DO else if to get all people inside the database and check
-  // } else if (persons.find(person => person.name === body.name)) {
-  //   return res.status(400).json({
-  //     error: "Name must be unique"
-  //   })
-  // }
 
   const person = new Person({
     name: req.body.name,
     number: req.body.number,
   })
 
-  person.save().then(savedPerson => {
-    res.json(savedPerson)
-  })
+  person
+    .save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      res.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (req, res) => {
@@ -83,7 +76,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     number: body.number,
   }
 
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
@@ -109,6 +102,8 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
   }
 
   next(error)
