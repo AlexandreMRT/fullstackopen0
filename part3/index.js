@@ -4,15 +4,14 @@ const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
-const { query } = require('express')
 
 const PORT = process.env.PORT
 
 morgan.token('person',
-  (req, res) => req.method === 'POST' ? JSON.stringify(req.body) : ' '
+  (req) => req.method === 'POST' ? JSON.stringify(req.body) : ' '
 )
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 
 app.use(express.json())
 
@@ -85,7 +84,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end()
     })
     .catch(error => next(error))
@@ -100,7 +99,7 @@ app.use(unknownEndpoint)
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message })
