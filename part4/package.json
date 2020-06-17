@@ -9,6 +9,7 @@
   "author": "Alexandre Teixeira",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^7.2.0",
     "nodemon": "^2.0.4"
   }
 }
