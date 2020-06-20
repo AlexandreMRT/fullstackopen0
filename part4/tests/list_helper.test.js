@@ -76,9 +76,16 @@ describe('total likes', () => {
     expect(result).toBe(listWithOneBlog[0].likes)
   })
 
-  test('when list has only one blog, equals the likes of that', () => {
+  test('of bigger list is calculated right', () => {
     const result = listHelper.totalLikes(blogs)
     expect(result).toBe(36)
   })
 })
 
+describe('favorite blog', () => {
+
+  test('of bigger list is calculated right', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toEqual(blogs[2])
+  })
+})
