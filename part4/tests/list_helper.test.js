@@ -88,4 +88,55 @@ describe('favorite blog', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual(blogs[2])
   })
+
+  test('empty object when bloglist is empty', () => {
+    const emptyBlog = []
+    const result = listHelper.favoriteBlog(emptyBlog)
+    expect(result).toEqual({})
+  })
+
+  test('one if there are same number of likes ', () => {
+    const sameLikesBlog = [
+      { id: '5a422a851b54a676234d17f7',
+        title: 'React patterns',
+        author: 'Michael Chan',
+        url: 'https://reactpatterns.com/',
+        likes: 2,
+        __v: 0
+      },
+      { _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 7,
+        __v: 0
+      },
+      { _id: '5a422bc61b54a676234d17fc',
+        title: 'Type wars',
+        author: 'Robert C. Martin',
+        url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+        likes: 7,
+        __v: 0
+      }
+    ]
+    const result = listHelper.favoriteBlog(sameLikesBlog)
+    expect(result).toEqual(sameLikesBlog[1])
+  })
+})
+
+describe('most blogs', () => {
+
+  test('return empty object when list is empty', () => {
+    const emptyBlogs = []
+    const result = listHelper.mostBlogs(emptyBlogs)
+    expect(result).toEqual({})
+  })
+
+  test('return the most blogs an author has', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    })
+  })
 })
