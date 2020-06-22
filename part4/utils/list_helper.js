@@ -51,9 +51,32 @@ const mostBlogs = (blogs) => {
   }
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return {}
+
+
+  const authorsWithLikes = blogs.map(({ author, likes }) => ({ author, likes }))
+
+  const authorsWithJointLikes = []
+
+  authorsWithLikes.forEach(function (a) {
+    if (!this[a.author]) {
+      this[a.author] = { author: a.author, likes: 0 }
+      authorsWithJointLikes.push(this[a.author])
+    }
+    this[a.author].likes += a.likes
+  }, Object.create(null))
+
+  const result = authorsWithJointLikes.reduce((prev, current) => (+prev.likes > +current.likes) ? prev : current)
+
+  return result
+}
+
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
