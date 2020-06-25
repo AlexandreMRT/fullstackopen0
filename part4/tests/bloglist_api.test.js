@@ -76,6 +76,13 @@ describe('bloglist API', () => {
     )
   })
 
+  test('all blogs have id property', async () => {
+
+    const response = await api.get('/api/blogs')
+
+    expect(response.body[0].id).toBeDefined()
+  })
+
   afterAll(() => {
     mongoose.connection.close()
   })
