@@ -83,7 +83,7 @@ describe('bloglist API', () => {
     expect(response.body[0].id).toBeDefined()
   })
 
-  test.only('a blog without likes is set to default 0 likes', async () => {
+  test('a blog without likes is set to default 0 likes', async () => {
     const newBlog = {
       title: 'Testing without likes',
       author: 'Alexandre Teixeira',
@@ -101,6 +101,50 @@ describe('bloglist API', () => {
     const lastBlogLikes = response.body.map(r => r.likes)
 
     expect(lastBlogLikes.pop()).toBe(0)
+  })
+
+  test('a blog without title recieves a bad request', async () => {
+    const newBlog = {
+      author: 'Alexandre Teixeira',
+      url: 'fullstackopen.com',
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+      .expect({ error: 'title and/or url missing' })
+  })
+
+  test('a blog without url recieves a bad request', async () => {
+    const newBlog = {
+      title: 'Tests without url',
+      author: 'Alexandre Teixeira',
+      likes: 13
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+      .expect({ error: 'title and/or url missing' })
+  })
+
+  test('a blog without title and url recieves a bad request', async () => {
+    const newBlog = {
+      author: 'Alexandre Teixeira',
+      likes: 11
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+      .expect({ error: 'title and/or url missing' })
   })
 
   afterAll(() => {
