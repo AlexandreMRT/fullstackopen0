@@ -126,6 +126,28 @@ describe('bloglist API', () => {
       .expect({ error: 'title and/or url missing' })
   })
 
+  test('update the likes from a valid blog', async () => {
+
+    const blogs = await helper.blogsInDb()
+    const blogToUpdate = blogs[0]
+
+    const newBlog = {
+      likes: 157,
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(newBlog)
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    const likes = blogsAtEnd.map(r => r.likes)
+
+    expect(likes).toContain(newBlog.likes)
+
+  })
+
   afterAll(() => {
     mongoose.connection.close()
   })
