@@ -4,10 +4,7 @@ const app = require('../app')
 const helper = require('./test_helper')
 
 const api = supertest(app)
-
 const Blog = require('../models/blog')
-
-
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -82,7 +79,7 @@ describe('bloglist API', () => {
       expect(resultBlog.body).toEqual(blogToView)
     })
 
-    test('fails with statuscode 404 if note does not exist', async () => {
+    test('fails with statuscode 404 if blog does not exist', async () => {
       const validNonexistingId = await helper.nonExistingId()
 
       console.log(validNonexistingId)
@@ -101,7 +98,7 @@ describe('bloglist API', () => {
     })
   })
 
-  describe('addition of a new note', () => {
+  describe('addition of a new blog', () => {
     test('succeeds with valid data', async () => {
       const newBlog = {
         title: 'Testando com supertest',
@@ -191,7 +188,7 @@ describe('bloglist API', () => {
     })
   })
 
-  describe('deletion of a note', () => {
+  describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
 
       const blogsAtStart = await helper.blogsInDb()
