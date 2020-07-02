@@ -49,7 +49,7 @@ describe('when there is initially one user in db', () => {
     }
 
     const result = await api
-      .post('api/users')
+      .post('/api/users')
       .send(newUser)
       .expect(400)
       .expect('Content-Type', /application\/json/)
