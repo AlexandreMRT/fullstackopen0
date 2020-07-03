@@ -6,10 +6,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     validate: /[a-z0-9]/,
-    minlength: 4,
+    minlength: 3,
+    required: true,
   },
   name: String,
-  passwordHash: String,
+  passwordHash:{
+    type: String,
+    minlength: 3,
+    required: true,
+  },
   blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
