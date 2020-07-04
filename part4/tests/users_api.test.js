@@ -7,58 +7,99 @@ const helper = require('./test_helper')
 const api = supertest(app)
 const User = require('../models/user')
 
-describe('when there is initially one user in db', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
+beforeEach(async () => {
+  await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('senha', 10)
-    const user = new User({ username: 'root', passwordHash })
+  const passwordHash = await bcrypt.hash('senha', 10)
+  const user = new User({ username: 'root', passwordHash })
 
-    await user.save()
+  await user.save()
+})
+
+describe('user API', () => {
+  describe('when there is initially one user in db', () => {
+    test('creation succeds with a fresh username', async () => {
+      const usersAtStart = await helper.usersInDb()
+
+      const newUser = {
+        username: 'tedl',
+        name: 'Alexandre Teixeira',
+        password: 'google'
+      }
+
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+      const usernames = usersAtEnd.map(user => user.username)
+      expect(usernames).toContain(newUser.username)
+    })
   })
 
-  test('creation succeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb()
+  describe('addition of a new user', () => {
+    test('response with appropriate status code when username already exists in database', async () => {
+      const usersAtStart = await helper.usersInDb()
 
-    const newUser = {
-      username: 'tedl',
-      name: 'Alexandre Teixeira',
-      password: 'google'
-    }
+      const newUser = {
+        username: 'root',
+        name: 'SuperUsuario',
+        password: 'monstro'
+      }
 
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+      const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
 
-    const usersAtEnd = await helper.usersInDb()
-    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+      expect(result.body.error).toContain('`username` to be unique')
 
-    const usernames = usersAtEnd.map(user => user.username)
-    expect(usernames).toContain(newUser.username)
-  })
+      const usersAtEnd = await helper.usersInDb()
 
-  test('response with appropriate status code when username already exists in database', async () => {
-    const usersAtStart = await helper.usersInDb()
+      expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
+    test('response with appropriate status code when username its not given', async () => {
+      const usersAtStart = await helper.usersInDb()
 
-    const newUser = {
-      username: 'root',
-      name: 'SuperUsuario',
-      password: 'monstro'
-    }
+      const newUser = {
+        name: 'Alexandre teixeira',
+        password: 'google'
+      }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
+      const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
 
-    expect(result.body.error).toContain('`username` to be unique')
+      expect(result.body.error).toContain('username and/or password missing')
 
-    const usersAtEnd = await helper.usersInDb()
+      const usersAtEnd = await helper.usersInDb()
 
-    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+      expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
+    test('response with appropriate status code when password its not given', async () => {
+      const usersAtStart = await helper.usersInDb()
 
+      const newUser = {
+        username: 'Tedl',
+        name: 'Alexandre teixeira',
+      }
+
+      const result = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+
+      expect(result.body.error).toContain('username and/or password missing')
+
+      const usersAtEnd = await helper.usersInDb()
+
+      expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
   })
 })
