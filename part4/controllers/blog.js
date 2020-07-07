@@ -66,8 +66,23 @@ blogsRouter.put('/:id', (request, response, next) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
 
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missong or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
+  if (user.blogs.includes(request.params.id)) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response
+      .status(204)
+      .end()
+  } else {
+    response
+      .status(403)
+      .end()
+  }
 })
 
 module.exports = blogsRouter
