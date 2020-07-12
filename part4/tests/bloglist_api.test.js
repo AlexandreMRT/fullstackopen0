@@ -2,21 +2,38 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+let token, user
 
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
+  for (let blog of helper.initialBlogs) {
+    let blogObject = new Blog(blog)
+    await blogObject.save()
+  }
+})
 
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+beforeEach(async () => {
+  await User.deleteMany({})
 
-  blogObject = new Blog(helper.initialBlogs[2])
-  await blogObject.save()
+  const passwordHash = await bcrypt.hash('google5', 10)
+  user = new User({ username: 'tedl', passwordHash })
+
+  const userForToken = {
+    username: user.username,
+    id: user._id
+  }
+
+  token = jwt.sign(userForToken, process.env.SECRET)
+
+  await user.save()
 })
 
 describe('bloglist API', () => {
@@ -100,18 +117,22 @@ describe('bloglist API', () => {
 
   describe('addition of a new blog', () => {
     test('succeeds with valid data', async () => {
+
       const newBlog = {
         title: 'Testando com supertest',
         author: 'FullstackOpen',
         url: 'fullstackopen.com',
         likes: 1000,
+        userId: user.id
       }
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
+
 
       const response = await api.get('/api/blogs')
 
@@ -132,6 +153,7 @@ describe('bloglist API', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -152,6 +174,7 @@ describe('bloglist API', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)
@@ -167,6 +190,7 @@ describe('bloglist API', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)
@@ -181,6 +205,7 @@ describe('bloglist API', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
         .expect('Content-Type', /application\/json/)

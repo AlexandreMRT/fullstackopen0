@@ -27,6 +27,23 @@ const initialBlogs = [
   }
 ]
 
+const initialUsers = [
+  {
+    _id: '5efd328c67b2ad967fcb5551',
+    username: 'alexandre',
+    name: 'Alexandre',
+    password: 'google5',
+    __v: 0
+  },
+  {
+    _id: '5efe8e3e21dd7e89f825e31c',
+    username: 'tedl',
+    name: 'Alexandre Teixeira',
+    password: '123456',
+    __v: 0
+  }
+]
+
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'O Livro da Refatoração',
     author: 'Alexandre',
@@ -49,15 +66,15 @@ const usersInDb = async () => {
   return users.map(user => user.toJSON())
 }
 
-const tokenForGivenUser = (user) => {
+const tokenForGivenUser = () => {
   const userForToken = {
-    username: user.username,
-    id: user._id,
+    username: initialUsers[0].username,
+    id: initialUsers[0]._id,
   }
 
-  return jwt.sign(userForToken, config.SECRET)
+  return jwt.sign(userForToken, process.env.SECRET)
 }
 
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, usersInDb, tokenForGivenUser
+  initialBlogs, initialUsers, nonExistingId, blogsInDb, usersInDb, tokenForGivenUser
 }
