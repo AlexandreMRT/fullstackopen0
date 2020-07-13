@@ -24,7 +24,7 @@ beforeEach(async () => {
   await User.deleteMany({})
 
   const passwordHash = await bcrypt.hash('google5', 10)
-  user = new User({ username: 'tedl', passwordHash })
+  user = new User({ username: 'tedl', _id: helper.initialUsers[0]._id, passwordHash })
 
   const userForToken = {
     username: user.username,
@@ -86,7 +86,7 @@ describe('bloglist API', () => {
     test('succeeds with a valid id', async () => {
       const blogsAtStart = await helper.blogsInDb()
 
-      const blogToView = blogsAtStart[0]
+      const blogToView = blogsAtStart[1]
 
       const resultBlog = await api
         .get(`/api/blogs/${blogToView.id}`)
@@ -221,6 +221,7 @@ describe('bloglist API', () => {
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
