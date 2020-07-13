@@ -73,7 +73,7 @@ const tokenForGivenUser = () => {
     id: initialUsers[0]._id,
   }
 
-  return jwt.sign(userForToken, process.env.SECRET)
+  return jwt.sign(userForToken, config.SECRET)
 }
 
 module.exports = {
