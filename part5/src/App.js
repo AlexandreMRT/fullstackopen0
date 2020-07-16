@@ -11,6 +11,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -67,6 +68,7 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      if (blog) setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
