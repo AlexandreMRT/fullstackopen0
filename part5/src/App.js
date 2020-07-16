@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification';
+import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -9,6 +11,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -45,7 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong Credentials')
+      setErrorMessage(`Wrond password or username`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 3000)
@@ -65,6 +68,7 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      if (blog) setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
@@ -146,6 +150,8 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      <Notification message={errorMessage} type={"error"} />
+      <Notification message={message} type={"succes"} />
 
       {user === null ?
       loginForm() :
