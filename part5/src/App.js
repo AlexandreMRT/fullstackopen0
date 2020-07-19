@@ -17,6 +17,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [loginVisible, setLoginVisible] = useState(false)
+  const [blogFormVisible, setblogFormVisible] = useState(false)
 
 
   useEffect(() => {
