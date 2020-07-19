@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
+import CreateBlog from './components/CreateBlog';
 import './index.css'
 
 const App = () => {
@@ -114,41 +115,32 @@ const App = () => {
         </div>
       </div>
     )
+  }
 
-    }
+  const blogForm = () => {
+    const hideWhenVisible = { display: blogFormVisible ? 'none' : '' }
+    const showWhenVisible = { display: blogFormVisible ? '' : 'none' }
 
-  const blogForm = () => (
-    <form onSubmit={handleSubmit}>
+    return (
       <div>
-        Title
-        <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
-        />
+        <div style={hideWhenVisible}>
+          <button onClick={() => setblogFormVisible(true)}>Create Blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <CreateBlog
+            handleSubmit={handleSubmit}
+            handleBlogTitleChange={({ target }) => setTitle(target.value)}
+            handleBlogAuthorChange={({ target }) => setAuthor(target.value)}
+            handleBlogUrlChange={({ target }) => setUrl(target.value)}
+            title={title}
+            author={author}
+            url={url}
+          />
+          <button onClick={() => setblogFormVisible(false)}>Cancel</button>
+        </div>
       </div>
-      <div>
-        Author
-        <input
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        URL
-        <input
-          type="text"
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type="submit">Create</button>
-    </form>
-  )
+    )
+  }
 
   return (
     <div>
