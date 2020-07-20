@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoginForm = ({
+const BlogForm = ({
   handleSubmit,
   handleBlogTitleChange,
   handleBlogAuthorChange,
@@ -48,4 +48,4 @@ const LoginForm = ({
   )
 }
 
-export default LoginForm
+export default BlogForm
