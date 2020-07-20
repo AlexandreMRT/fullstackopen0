@@ -4,7 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
-import CreateBlog from './components/CreateBlog';
+import BlogForm from './components/BlogForm';
 import './index.css'
 
 const App = () => {
@@ -127,7 +127,7 @@ const App = () => {
           <button onClick={() => setblogFormVisible(true)}>Create Blog</button>
         </div>
         <div style={showWhenVisible}>
-          <CreateBlog
+          <BlogForm
             handleSubmit={handleSubmit}
             handleBlogTitleChange={({ target }) => setTitle(target.value)}
             handleBlogAuthorChange={({ target }) => setAuthor(target.value)}
