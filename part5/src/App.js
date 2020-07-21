@@ -6,6 +6,7 @@ import Notification from './components/Notification';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import './index.css'
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -17,9 +18,6 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [loginVisible, setLoginVisible] = useState(false)
-  const [blogFormVisible, setblogFormVisible] = useState(false)
-
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -90,20 +88,25 @@ const App = () => {
   const loggedUser = (user) => (
     <div>
       <h2>{user.name} logged in.<button onClick={handleLogOut}>Log Out</button></h2>
-      {blogForm()}
+      <Togglable buttonLabel="New Blog">
+        <BlogForm
+          handleSubmit={handleSubmit}
+          handleBlogTitleChange={({ target }) => setTitle(target.value)}
+          handleBlogAuthorChange={({ target }) => setAuthor(target.value)}
+          handleBlogUrlChange={({ target }) => setUrl(target.value)}
+          title={title}
+          author={author}
+          url={url}
+        />
+      </Togglable>
     </div>
   )
 
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
     return (
       <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
+        <Togglable buttonLabel="Login">
           <LoginForm
             username={username}
             passowrd={password}
@@ -111,33 +114,7 @@ const App = () => {
             handleUsernameChange={({ target }) => setUsername(target.value)}
             handlePasswordChange={({ target }) => setPassword(target.value)}
           />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
-
-  const blogForm = () => {
-    const hideWhenVisible = { display: blogFormVisible ? 'none' : '' }
-    const showWhenVisible = { display: blogFormVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setblogFormVisible(true)}>Create Blog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <BlogForm
-            handleSubmit={handleSubmit}
-            handleBlogTitleChange={({ target }) => setTitle(target.value)}
-            handleBlogAuthorChange={({ target }) => setAuthor(target.value)}
-            handleBlogUrlChange={({ target }) => setUrl(target.value)}
-            title={title}
-            author={author}
-            url={url}
-          />
-          <button onClick={() => setblogFormVisible(false)}>Cancel</button>
-        </div>
+        </Togglable>
       </div>
     )
   }
