@@ -15,9 +15,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -57,19 +54,12 @@ const App = () => {
     }
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const addBlog = async ( blogObject ) => {
+
     try {
-      const blog = await blogService.create({
-        title,
-        author,
-        url
-      })
+      const blog = await blogService.create(blogObject)
 
       blogService.setToken(user.token)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       if (blog) setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
@@ -87,16 +77,10 @@ const App = () => {
 
   const loggedUser = (user) => (
     <div>
-      <h2>{user.name} logged in.<button onClick={handleLogOut}>Log Out</button></h2>
+      <h2>{user.name} Logged in.<button onClick={handleLogOut}>Log Out</button></h2>
       <Togglable buttonLabel="New Blog">
         <BlogForm
-          handleSubmit={handleSubmit}
-          handleBlogTitleChange={({ target }) => setTitle(target.value)}
-          handleBlogAuthorChange={({ target }) => setAuthor(target.value)}
-          handleBlogUrlChange={({ target }) => setUrl(target.value)}
-          title={title}
-          author={author}
-          url={url}
+          createBlog={addBlog}
         />
       </Togglable>
     </div>
