@@ -21,15 +21,14 @@ const Blog = ({ blog }) => {
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-        <button onClick={toggleVisibility}>{ buttonText }</button>
-    <div style={hideWhenVisible}>
-      </div>
+      <button onClick={toggleVisibility}>{ visible ? 'Hide' : 'Show' }</button>
+
       <div style={showWhenVisible}>
         {blog.url}<br />
-        {blog.likes}<br />
+        {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })} >Like</button><br/>
         {blog.user.name}
+      </div>
     </div>
-</div>
   )
 }
 
