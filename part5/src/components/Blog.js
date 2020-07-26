@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
+import blogService from '../services/blogs';
 
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
-  const [buttonLabel, setButtonLabel] = useState(false)
 
-  const buttonText = buttonLabel ? 'Hide' : 'Show'
-  const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
-    setButtonLabel(!buttonLabel)
   }
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
