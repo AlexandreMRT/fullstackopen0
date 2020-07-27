@@ -18,6 +18,13 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const removeButtonStyle = {
+    backgroundColor: 'blue',
+    borderRadius: '5px',
+    color: 'white',
+    fontSize: '15px'
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
