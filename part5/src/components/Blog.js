@@ -18,6 +18,13 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
+  const removeButtonStyle = {
+    backgroundColor: 'blue',
+    borderRadius: '5px',
+    color: 'white',
+    fontSize: '15px'
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
@@ -26,7 +33,8 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         {blog.url}<br />
         {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })} >Like</button><br/>
-        {blog.user.name}
+        {blog.user.name}<br />
+        <button style={removeButtonStyle} onClick={() => blogService.remove(blog.id)} >Remove</button><br/>
       </div>
     </div>
   )
