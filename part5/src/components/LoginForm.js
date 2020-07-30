@@ -1,13 +1,12 @@
-import React from 'react';
-
-
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const LoginForm = ({
   handleSubmit,
   handleUsernameChange,
   handlePasswordChange,
   username,
-  password
+  password,
 
 }) => {
   return (
