@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from './components/Notification';
-import LoginForm from './components/LoginForm';
-import BlogForm from './components/BlogForm';
+import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import './index.css'
-import Togglable from './components/Togglable';
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -15,11 +15,12 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage(`Wrond password or username`)
+      setErrorMessage('Wrond password or username')
       setTimeout(() => {
         setErrorMessage(null)
       }, 3000)
@@ -55,6 +56,7 @@ const App = () => {
   }
 
   const addBlog = async ( blogObject ) => {
+    blogFormRef.current.toggleVisibility()
 
     try {
       const blog = await blogService.create(blogObject)
