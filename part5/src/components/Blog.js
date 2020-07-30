@@ -25,8 +25,6 @@ const Blog = ({ blog }) => {
     fontSize: '15px'
   }
 
-  //TODO ask before remove
-
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
