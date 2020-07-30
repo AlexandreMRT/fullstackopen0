@@ -34,7 +34,7 @@ const Blog = ({ blog }) => {
         {blog.url}<br />
         {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })} >Like</button><br/>
         {blog.user.name}<br />
-        <button style={removeButtonStyle} onClick={() => blogService.remove(blog.id)} >Remove</button><br/>
+        <button style={removeButtonStyle} onClick={() => { if(window.confirm('Delete the item?')) {blogService.remove(blog.id)} }} >Remove</button><br/>
       </div>
     </div>
   )
