@@ -26,13 +26,13 @@ const Blog = ({ blog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} {blog.author}
       <button onClick={toggleVisibility}>{ visible ? 'Hide' : 'Show' }</button>
 
       <div style={showWhenVisible}>
         {blog.url}<br />
-        {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })} >Like</button><br/>
+        likes {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })} >Like</button><br/>
         {blog.user.name}<br />
         <button style={removeButtonStyle} onClick={() => { if(window.confirm('Delete the item?')) {blogService.remove(blog.id)} }} >Remove</button><br/>
       </div>
