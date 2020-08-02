@@ -46,7 +46,30 @@ test('render content', () => {
   )
 })
 
-test('clicking the button calls event handler once', () => {
+test('the component only display the blog title and author', () => {
+  const blog = {
+    title: 'testtitle',
+    author: 'testauthor',
+    url: 'testurl',
+    likes: 0,
+    user: {
+      name: 'Alexandre',
+    }
+  }
+
+
+  const component = render(
+    <Blog blog={blog}  />
+  )
+
+  component.debug()
+
+  expect(component.container).toHaveTextContent(
+    'testtitle testauthor Show'
+  )
+})
+
+test('clicking the show button opens the component ', () => {
   const blog = {
     title: 'testtitle',
     author: 'testauthor',
@@ -69,5 +92,5 @@ test('clicking the button calls event handler once', () => {
   expect(component.container).toHaveTextContent('testtitle')
   expect(component.container).toHaveTextContent('testauthor')
   expect(component.container).toHaveTextContent('testurl')
-  expect(component.container).toHaveTextContent('likes')
+  expect(component.container).toHaveTextContent('Likes')
 })
