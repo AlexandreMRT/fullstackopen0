@@ -31,7 +31,7 @@ const Blog = ({ blog }) => {
           <br />
           {blog.url}
           <br />
-            Likes: {blog.likes} <button onClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })}>Like</button>
+            Likes: {blog.likes} <button onDoubleClick={() => blogService.update(blog.id, { likes: blog.likes + 1 })}>Like</button>
           <br />
           {blog.user.username}
           <br />
