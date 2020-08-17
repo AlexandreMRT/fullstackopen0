@@ -24,7 +24,7 @@ describe('rendering the blog tests', () => {
     }
 
     component = render(
-      <Blog blog={blog} giveLikes={mockHandler} />
+      <Blog blog={blog} handleLike={mockHandler} />
     )
   })
 
@@ -78,6 +78,7 @@ describe('rendering the blog tests', () => {
     fireEvent.click(showButton)
 
     const likeButton = component.getByText('Like')
+
     fireEvent.click(likeButton)
     fireEvent.click(likeButton)
     expect(mockHandler.mock.calls).toHaveLength(2)
