@@ -29,7 +29,7 @@ describe('Blog app', function() {
   })
 })
 
-describe('when logged in', function() {
+describe('when user logged in', function() {
   beforeEach(function() {
     cy.visit('http://localhost:3000')
     cy.contains('Login').click()
