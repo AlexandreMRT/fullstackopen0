@@ -27,6 +27,15 @@ describe('Blog app', function() {
 
     cy.contains('Alexandre Teixeira Logged in.')
   })
+
+  it('login fails with wrong password', function() {
+    cy.contains('Login').click()
+    cy.get('#username').type('Alexandre')
+    cy.get('#password').type('wrong')
+    cy.get('#login-button').click()
+
+    cy.contains('Wrond password or username')
+  })
 })
 
 describe('when user logged in', function() {
