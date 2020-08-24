@@ -34,7 +34,7 @@ describe('Blog app', function() {
     cy.get('#password').type('wrong')
     cy.get('#login-button').click()
 
-    cy.contains('Wrond password or username')
+    cy.get('.error').should('contain', 'Wrong password or username')
   })
 })
 
