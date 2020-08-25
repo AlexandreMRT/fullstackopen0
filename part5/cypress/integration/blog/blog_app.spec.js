@@ -39,23 +39,52 @@ describe('Blog app', function() {
     cy.get('.error').should('have.css', 'border-style', 'solid')
     cy.get('html').should('not.contain', 'Alexandre logged in')
   })
-})
+  describe('when user logged in', function() {
+    beforeEach(function() {
+      // cy.visit('http://localhost:3000')
+      // cy.contains('Login').click()
+      // cy.get('#username').type('Alexandre')
+      // cy.get('#password').type('Translation1')
+      // cy.get('#login-button').click()
+      // different way to login without having to fill the form
+      //cy.login uses the support/commands.js function
+      cy.login({ username: 'Alexandre', password: 'Translation1' })
+    })
 
-describe('when user logged in', function() {
-  beforeEach(function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('Login').click()
-    cy.get('#username').type('Alexandre')
-    cy.get('#password').type('Translation1')
-    cy.get('#login-button').click()
-  })
+    it('a new Blog can be created', function() {
+      cy.contains('New Blog').click()
+      cy.get('#title').type('Blog title')
+      cy.get('#author').type('Blog author')
+      cy.get('#url').type('blogurl.com.br')
+      cy.get('#create-button').click()
+      cy.contains('A new blog Blog title by Blog author added.')
+    })
+    describe('and a blog exists', function() {
+      beforeEach(function() {
+        // cy.contains('New Blog').click()
+        // cy.get('#title').type('First Blog')
+        // cy.get('#author').type('Alexandre Teixeira')
+        // cy.get('#url').type('www.alexandre.com.br')
+        // cy.get('#create-button').click()
+        // cy.contains('A new blog First Blog by Alexandre Teixeira added.')
+        cy.createBlog({
+          title: 'First Blog',
+          author: 'Alexandre Teixeira',
+          url: 'www.alexandre.com.br'
+        })
+      })
 
-  it('a new Blog can be created', function() {
-    cy.contains('New Blog').click()
-    cy.get('#title').type('Blog title')
-    cy.get('#author').type('Blog author')
-    cy.get('#url').type('blogurl.com.br')
-    cy.get('#create-button').click()
-    cy.contains('A new blog Blog title by Blog author added.')
+      it.only('it can be liked', function () {
+        cy.contains('First Blog Alexandre Teixeira')
+          .contains('Show')
+          .click()
+
+        cy.contains('www.alexandre.com.br')
+          .contains('Likes: ')
+          .contains('Alexandre')
+          .contains('Like')
+          .click()
+      })
+    })
   })
 })
