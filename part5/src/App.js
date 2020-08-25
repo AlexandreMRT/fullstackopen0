@@ -33,8 +33,10 @@ const App = () => {
   }, [])
 
 
-  const handleLike = async (blog) => {
-    await blogService.update(blog.id, { likes: blog.likes + 1 })
+  const handleLike = async ( id ) => {
+    const blogLiked = blogs.find(blog => blog.id === id)
+    await blogService.update(blogLiked.id, {
+      likes: blogLiked.likes + 1 })
   }
 
   const handleLogin = async (event) => {
