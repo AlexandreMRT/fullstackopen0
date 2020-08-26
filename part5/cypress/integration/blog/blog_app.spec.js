@@ -39,6 +39,7 @@ describe('Blog app', function() {
     cy.get('.error').should('have.css', 'border-style', 'solid')
     cy.get('html').should('not.contain', 'Alexandre logged in')
   })
+
   describe('when user logged in', function() {
     beforeEach(function() {
       // cy.visit('http://localhost:3000')
@@ -59,6 +60,7 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
       cy.contains('A new blog Blog title by Blog author added.')
     })
+
     describe('and a blog exists', function() {
       beforeEach(function() {
         // cy.contains('New Blog').click()
@@ -74,7 +76,7 @@ describe('Blog app', function() {
         })
       })
 
-      it.only('it can be liked', function () {
+      it('it can be liked', function () {
         cy.contains('First Blog Alexandre Teixeira')
           .contains('Show')
           .click()
