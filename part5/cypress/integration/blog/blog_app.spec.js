@@ -61,7 +61,7 @@ describe('Blog app', function() {
       cy.contains('A new blog Blog title by Blog author added.')
     })
 
-    describe('and a blog exists', function() {
+    describe('And a blog exists', function() {
       beforeEach(function() {
         // cy.contains('New Blog').click()
         // cy.get('#title').type('First Blog')
