@@ -74,10 +74,20 @@ describe('Blog app', function() {
           author: 'Alexandre Teixeira',
           url: 'www.alexandre.com.br'
         })
+        cy.createBlog({
+          title: 'Second Blog',
+          author: 'Alexandre Teixeira',
+          url: 'www.alexandre.com.br'
+        })
+        cy.createBlog({
+          title: 'Third Blog',
+          author: 'Alexandre Teixeira',
+          url: 'www.alexandre.com.br'
+        })
       })
 
       it('it can be liked', function () {
-        cy.contains('First Blog Alexandre Teixeira')
+        cy.contains('Third Blog Alexandre Teixeira')
           .contains('Show')
           .click()
 
@@ -86,6 +96,12 @@ describe('Blog app', function() {
           .contains('Alexandre')
           .contains('Like')
           .click()
+      })
+
+      it('other of those can be liked', function () {
+        cy.contains('Second Blog Alexandre Teixeira').parent().find('button').click()
+        cy.contains('Second Blog Alexandre Teixeira').parent().find('#like-button')
+          .should('contain', 'Like')
       })
     })
   })
