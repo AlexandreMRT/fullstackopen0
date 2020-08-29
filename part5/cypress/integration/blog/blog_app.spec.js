@@ -15,7 +15,7 @@ describe('Blog app', function() {
     cy.contains('Login')
   })
 
-  it.only('login form can be opened', function() {
+  it('login form can be opened', function() {
     cy.contains('Login').click()
 
     cy.contains('Username')
@@ -105,6 +105,29 @@ describe('Blog app', function() {
         cy.contains('Second Blog Alexandre Teixeira').parent().find('button').click()
         cy.contains('Second Blog Alexandre Teixeira').parent().find('#like-button')
           .should('contain', 'Like')
+      })
+
+      it.only('the creator of the blog can delete it', function () {
+
+        cy.contains('Second Blog Alexandre Teixeira')
+          .contains('Show')
+          .click()
+
+        cy.contains('Remove')
+          .click()
+
+        cy.on('window:confirm', () => true)
+
+        // cy.contains('Delete the item?')
+        //   .contains('OK')
+        //   .click()
+        cy.reload(true)
+
+        cy.contains('First Blog Alexandre Teixeira')
+        cy.contains('Second Blog Alexandre Teixeira')
+        cy.contains('Third Blog Alexandre Teixeira')
+        cy.get('First Blog Alexandre Teixeira').should('not.exist')
+
       })
     })
   })
