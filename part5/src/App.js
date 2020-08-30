@@ -110,7 +110,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <Notification message={errorMessage} type={'error'} />
-      <Notification message={message} type={'succes'} />
+      <Notification message={message} type={'success'} />
 
       {user === null ?
         loginForm() :
