@@ -73,7 +73,10 @@ const App = () => {
       const blog = await blogService.create(blogObject)
 
       blogService.setToken(user.token)
-      if (blog) setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
+      if (blog) {
+        setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
+        setBlogs(blogs.concat(blog))
+      }
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
