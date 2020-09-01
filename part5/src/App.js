@@ -32,6 +32,21 @@ const App = () => {
     }
   }, [])
 
+  const handleDelete = async (id) => {
+    const deletedBlog = blogs.find(blog => blog.id === id)
+
+    if(window.confirm('Delete the item?')) {
+      try{
+        blogService.remove(deletedBlog.id)
+        setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
+      } catch (exception) {
+        setErrorMessage(`Something went wrong! ${exception}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+      }
+    }
+  }
 
   const handleLike = async ( id ) => {
     const blog = blogs.find(blog => blog.id === id)
