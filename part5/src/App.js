@@ -145,7 +145,7 @@ const App = () => {
       <div className="blogs-container" >
         {
           blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} />
+            <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} handleDelete={() => handleDelete(blog.id)} />
           )}
       </div>
     </div>
