@@ -119,17 +119,7 @@ describe('Blog app', function() {
           .click()
 
         cy.on('window:confirm', () => true)
-
-        // cy.contains('Delete the item?')
-        //   .contains('OK')
-        //   .click()
-        cy.reload(true)
-
-        cy.contains('First Blog Alexandre Teixeira')
-        cy.contains('Second Blog Alexandre Teixeira')
-        cy.contains('Third Blog Alexandre Teixeira')
-        cy.get('First Blog Alexandre Teixeira').should('not.exist')
-
+        cy.get('.blogs-container').should('not.contain', 'Second Blog Alexandre Teixeira')
       })
     })
   })
