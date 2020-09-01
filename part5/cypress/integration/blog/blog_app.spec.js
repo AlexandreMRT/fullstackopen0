@@ -105,9 +105,11 @@ describe('Blog app', function() {
         cy.contains('Second Blog Alexandre Teixeira').parent().find('button').click()
         cy.contains('Second Blog Alexandre Teixeira').parent().find('#like-button')
           .should('contain', 'Like')
+          .click()
+        cy.contains('Likes: 1')
       })
 
-      it.only('the creator of the blog can delete it', function () {
+      it('the creator of the blog can delete it', function () {
 
         cy.contains('Second Blog Alexandre Teixeira')
           .contains('Show')
