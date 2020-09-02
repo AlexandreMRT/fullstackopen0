@@ -6,7 +6,14 @@ describe('Blog app', function() {
       username: 'Alexandre',
       password: 'Translation1'
     }
+
+    const userTwo = {
+      name: 'Matheus Ramalho',
+      username: 'Matheus',
+      password: 'Translation1'
+    }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users/', userTwo)
     cy.visit('http://localhost:3000')
   })
 
@@ -15,7 +22,7 @@ describe('Blog app', function() {
     cy.contains('Login')
   })
 
-  it.only('login form can be opened', function() {
+  it('login form can be opened', function() {
     cy.contains('Login').click()
 
     cy.contains('Username')
@@ -80,12 +87,14 @@ describe('Blog app', function() {
         cy.createBlog({
           title: 'Second Blog',
           author: 'Alexandre Teixeira',
-          url: 'www.alexandre.com.br'
+          url: 'www.alexandre.com.br',
+          likes: 20
         })
         cy.createBlog({
           title: 'Third Blog',
           author: 'Alexandre Teixeira',
-          url: 'www.alexandre.com.br'
+          url: 'www.alexandre.com.br',
+          likes: 30
         })
       })
 
@@ -105,7 +114,51 @@ describe('Blog app', function() {
         cy.contains('Second Blog Alexandre Teixeira').parent().find('button').click()
         cy.contains('Second Blog Alexandre Teixeira').parent().find('#like-button')
           .should('contain', 'Like')
+          .click()
+        cy.contains('Likes: 21')
       })
+
+      it('blogs are displayed sorted by like number', function () {
+        cy.get('[id^=show-button]').click({ multiple: true })
+
+        cy.get('.blog').then(($blogs) => {
+
+          expect($blogs).to.have.length(3)
+          expect($blogs.eq(0)).to.contain('Third Blog Alexandre Teixeira')
+          expect($blogs.eq(1)).to.contain('Second Blog Alexandre Teixeira')
+          expect($blogs.eq(2)).to.contain('First Blog Alexandre Teixeira')
+        })
+      })
+
+      it('the creator of the blog can delete it', function () {
+        cy.contains('Second Blog Alexandre Teixeira')
+          .contains('Show')
+          .click()
+
+        cy.contains('Remove')
+          .click()
+
+        cy.on('window:confirm', () => true)
+        cy.get('.blogs-container').should('not.contain', 'Second Blog Alexandre Teixeira')
+      })
+
+      it('a user cannot delete a blog he did not create', function () {
+        cy.contains('Log Out')
+          .click()
+
+        cy.login({ username: 'Matheus', password: 'Translation1' })
+
+        cy.contains('Second Blog Alexandre Teixeira')
+          .contains('Show')
+          .click()
+
+        cy.contains('Remove')
+          .click()
+
+        cy.on('window:confirm', () => true)
+        cy.contains('You can\'t delete this blog!')
+      })
+
     })
   })
 })

@@ -32,11 +32,30 @@ const App = () => {
     }
   }, [])
 
+  const handleDelete = async (id) => {
+    const deletedBlog = blogs.find(blog => blog.id === id)
+
+    if(window.confirm('Delete the item?')) {
+      try{
+        await blogService.remove(deletedBlog.id)
+        setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
+      } catch (exception) {
+        setErrorMessage('You can\'t delete this blog!')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+      }
+    }
+  }
 
   const handleLike = async ( id ) => {
-    const blogLiked = blogs.find(blog => blog.id === id)
-    await blogService.update(blogLiked.id, {
-      likes: blogLiked.likes + 1 })
+    const blog = blogs.find(blog => blog.id === id)
+    const likedBlog = { ...blog,
+      likes: blog.likes + 1 }
+
+    const response = await blogService.update(id, likedBlog)
+
+    if (response) setBlogs((blogs.map(blog => blog.id !== id ? blog : likedBlog).sort((a, b) => b.likes - a.likes)))
   }
 
   const handleLogin = async (event) => {
@@ -69,7 +88,13 @@ const App = () => {
       const blog = await blogService.create(blogObject)
 
       blogService.setToken(user.token)
-      if (blog) setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
+      if (blog) {
+        setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
+        setBlogs(blogs.concat(blog))
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
+      }
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
       setTimeout(() => {
@@ -110,7 +135,7 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <Notification message={errorMessage} type={'error'} />
-      <Notification message={message} type={'succes'} />
+      <Notification message={message} type={'success'} />
 
       {user === null ?
         loginForm() :
@@ -119,11 +144,13 @@ const App = () => {
           {blogForm()}
         </div>
       }
-      <h2>Blogs</h2>
-      {
-        blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} />
-        )}
+      <h2>Blog List</h2>
+      <div className="blogs-container" >
+        {
+          blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} handleDelete={() => handleDelete(blog.id)} />
+          )}
+      </div>
     </div>
   )
 }
