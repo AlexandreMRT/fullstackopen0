@@ -130,6 +130,24 @@ describe('Blog app', function() {
         cy.on('window:confirm', () => true)
         cy.get('.blogs-container').should('not.contain', 'Second Blog Alexandre Teixeira')
       })
+
+      it('a user cannot delete a blog he did not create', function () {
+        cy.contains('Log Out')
+          .click()
+
+        cy.login({ username: 'Matheus', password: 'Translation1' })
+
+        cy.contains('Second Blog Alexandre Teixeira')
+          .contains('Show')
+          .click()
+
+        cy.contains('Remove')
+          .click()
+
+        cy.on('window:confirm', () => true)
+        cy.contains('You can\'t delete this blog!')
+      })
+
     })
   })
 })
