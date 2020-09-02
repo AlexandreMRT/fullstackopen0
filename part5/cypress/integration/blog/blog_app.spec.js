@@ -6,7 +6,14 @@ describe('Blog app', function() {
       username: 'Alexandre',
       password: 'Translation1'
     }
+
+    const userTwo = {
+      name: 'Matheus Ramalho',
+      username: 'Matheus',
+      password: 'Translation1'
+    }
     cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', 'http://localhost:3001/api/users/', userTwo)
     cy.visit('http://localhost:3000')
   })
 
