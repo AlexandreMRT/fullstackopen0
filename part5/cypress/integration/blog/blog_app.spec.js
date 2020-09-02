@@ -87,12 +87,14 @@ describe('Blog app', function() {
         cy.createBlog({
           title: 'Second Blog',
           author: 'Alexandre Teixeira',
-          url: 'www.alexandre.com.br'
+          url: 'www.alexandre.com.br',
+          likes: 20
         })
         cy.createBlog({
           title: 'Third Blog',
           author: 'Alexandre Teixeira',
-          url: 'www.alexandre.com.br'
+          url: 'www.alexandre.com.br',
+          likes: 30
         })
       })
 
