@@ -37,7 +37,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
           <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>Remove</button>
         </div> :
         <div style={blogStyle}>
-          {blog.title} {blog.author} <button onClick={toggleVisibility}>Show</button>
+          {blog.title} {blog.author} <button id="show-button" onClick={toggleVisibility}>Show</button>
         </div>
       }
     </div>
