@@ -115,11 +115,22 @@ describe('Blog app', function() {
         cy.contains('Second Blog Alexandre Teixeira').parent().find('#like-button')
           .should('contain', 'Like')
           .click()
-        cy.contains('Likes: 1')
+        cy.contains('Likes: 21')
+      })
+
+      it('blogs are displayed sorted by like number', function () {
+        cy.get('[id^=show-button]').click({ multiple: true })
+
+        cy.get('.blog').then(($blogs) => {
+
+          expect($blogs).to.have.length(3)
+          expect($blogs.eq(0)).to.contain('Third Blog Alexandre Teixeira')
+          expect($blogs.eq(1)).to.contain('Second Blog Alexandre Teixeira')
+          expect($blogs.eq(2)).to.contain('First Blog Alexandre Teixeira')
+        })
       })
 
       it('the creator of the blog can delete it', function () {
-
         cy.contains('Second Blog Alexandre Teixeira')
           .contains('Show')
           .click()
