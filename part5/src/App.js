@@ -91,6 +91,9 @@ const App = () => {
       if (blog) {
         setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
         setBlogs(blogs.concat(blog))
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       }
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
