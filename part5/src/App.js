@@ -37,10 +37,10 @@ const App = () => {
 
     if(window.confirm('Delete the item?')) {
       try{
-        blogService.remove(deletedBlog.id)
+        await blogService.remove(deletedBlog.id)
         setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
       } catch (exception) {
-        setErrorMessage(`Something went wrong! ${exception}`)
+        setErrorMessage('You can\'t delete this blog!')
         setTimeout(() => {
           setErrorMessage(null)
         }, 3000)
