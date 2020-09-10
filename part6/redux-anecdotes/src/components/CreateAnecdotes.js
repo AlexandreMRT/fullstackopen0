@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 
 const CreateAnecdotes = () => {
 
@@ -6,17 +7,31 @@ const CreateAnecdotes = () => {
 
   const addAnecdotes = (event) => {
     event.preventDefault()
-    const content= event.target.anectdote.value
-    event.target.anectdote.value = ''
-    store.dispatch({
+    const content= event.target.anecdote.value
+    event.target.anecdote.value = ''
+    store.dispatch(createAnecdote(content))
+  }
+
+  const 
+
+
+  const createAnecdote = (content) => {
+    return {
       type: 'NEW_ANECDOTE',
       data: {
         content,
+        votes: 0,
         id: generateId()
       }
-    })
+    }
   }
   
+  const voteForAnecdote = (id) => {
+    return {
+      type: 'VOTE',
+      data: { id }
+    }
+  }
 
   return (
     <div>
