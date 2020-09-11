@@ -7,15 +7,13 @@ const CreateAnecdotes = () => {
 
   const addAnecdotes = (event) => {
     event.preventDefault()
-    const content= event.target.anecdote.value
+    const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     store.dispatch(createAnecdote(content))
   }
 
-  const 
-
-
   const createAnecdote = (content) => {
+
     return {
       type: 'NEW_ANECDOTE',
       data: {
@@ -25,7 +23,7 @@ const CreateAnecdotes = () => {
       }
     }
   }
-  
+
   const voteForAnecdote = (id) => {
     return {
       type: 'VOTE',
