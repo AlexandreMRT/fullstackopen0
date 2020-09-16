@@ -37,7 +37,7 @@ export const addAnecdote = (content) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = [], action) => {
+const reducer = (state = initialState, action) => {
   switch(action.type) {
     case 'NEW_ANECDOTE':
       console.log('state :>> ', state);
