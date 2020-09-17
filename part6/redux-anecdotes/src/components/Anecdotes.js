@@ -2,7 +2,16 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteForAnecdote } from '../reducers/anecdoteReducer'
 
-
+const Anecdote = ({ anecdote, handleClick }) => {
+  return(
+    <div>
+      {anecdote.content}
+      <br />
+      has {anecdote.votes}
+      <button onClick={handleClick} >vote</button>
+    </div>
+  )
+}
 
 const Anecdotes = () => {
   const anecdotes = useSelector(state => state)
