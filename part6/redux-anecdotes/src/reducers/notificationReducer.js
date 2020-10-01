@@ -1,13 +1,27 @@
+export const clearNotification = () => {
+  return {
+    type: 'CLEAR_NOTIFICATION',
+  }
+}
+
+export const setVoteNotification = (content) => {
+  return {
+    type: 'SET_NOTIFICATION',
+    data: {
+      content,
+    },
+  }
+}
+
 const NotificationReducer = (state = null, action) => {
-  switch(action.type) {
+  switch (action.type) {
+    case 'SET_NOTIFICATION':
+      console.log('asdasd', action.data.content)
+      return `you voted for '${action.data.content}'`
+    case 'CLEAR_NOTIFICATION':
+      return null
     case 'NEW_ANECDOTE':
-      state = `you created the anecdote ${action.data.content}`;
-      return state
-
-    case 'VOTE_ANECDOTE':
-      state = `you voted for ${action.data.content}`;
-
-      return state
+      return `you added the anecdote '${action.data.content}'`
     default:
       return state
   }
