@@ -16,7 +16,6 @@ export const setVoteNotification = (content) => {
 const NotificationReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
-      console.log('asdasd', action.data.content)
       return `you voted for '${action.data.content}'`
     case 'CLEAR_NOTIFICATION':
       return null
