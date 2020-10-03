@@ -1,12 +1,14 @@
 import React from 'react'
-import Anecdotes from './components/AnecdoteList'
+import AnecdotesList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
+import Notification from './components/Notification'
 
 const App = () => {
 
   return (
     <>
-      <Anecdotes />
+      <Notification />
+      <AnecdotesList />
       <AnecdoteForm />
     </>
   )
