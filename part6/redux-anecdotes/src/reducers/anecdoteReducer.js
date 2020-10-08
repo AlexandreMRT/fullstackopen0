@@ -12,14 +12,10 @@ export const voteForAnecdote = (id, content) => {
   }
 }
 
-export const addAnecdote = (content) => {
+export const addAnecdote = (data) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: {
-      content: content,
-      id: getId(),
-      votes: 0
-    }
+    data,
   }
 }
 
