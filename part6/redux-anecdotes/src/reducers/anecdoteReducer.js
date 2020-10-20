@@ -1,12 +1,12 @@
 import anecdoteService from '../services/anecdotes'
 
-export const voteForAnecdote = (id, content) => {
-  return {
-    type: 'VOTE_ANECDOTE',
-    data: {
-      id,
-      content
-    }
+export const voteForAnecdote = (anecdote) => {
+  return async dispatch => {
+    const updatedAnecdote = await anecdoteService.vote({...anecdote, votes: anecdote.votes + 1})
+    dispatch({
+      type: 'VOTE_ANECDOTE',
+      data: updatedAnecdote
+    })
   }
 }
 
