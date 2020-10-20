@@ -26,6 +26,14 @@ const Anecdotes = () => {
     }
   })
 
+  const voteFor = async (anecdote) => {
+    dispatch(voteForAnecdote(anecdote))
+    dispatch(setVoteNotification(anecdote.content))
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, 5000)
+  }
+
   return (
     <div>
       <h2>Anecdotes</h2>
@@ -34,13 +42,7 @@ const Anecdotes = () => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          handleClick={() => {
-            dispatch(voteForAnecdote(anecdote.id, anecdote.content))
-            dispatch(setVoteNotification(anecdote.content))
-            setTimeout(() => {
-              dispatch(clearNotification())
-            }, 5000)
-          }}
+          handleClick={() => voteFor(anecdote)}
         />
       )}
     </div>
