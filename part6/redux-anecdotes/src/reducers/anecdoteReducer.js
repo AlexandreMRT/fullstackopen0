@@ -20,7 +20,6 @@ export const addAnecdote = (data) => {
   }
 }
 
-
 export const initializeAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService.getAll()
@@ -30,7 +29,6 @@ export const initializeAnecdotes = () => {
     })
   }
 }
-
 
 const AnecdoteReducer = (state = [], action) => {
   switch(action.type) {
