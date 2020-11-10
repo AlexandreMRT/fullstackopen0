@@ -52,7 +52,7 @@ const Anecdotes = (props) => {
           anecdote={anecdote}
           handleClick={ () => {
               props.voteForAnecdote(anecdote)
-              props.setNotification(`you voted '${anecdote.content}'`, 3)
+              props.setNotification(`you voted '${anecdote.content}'`, 5)
             }
           }
         />
