@@ -4,13 +4,19 @@ export const clearNotification = () => {
   }
 }
 
+let timer;
+
 export const setNotification = (content, time) => {
   return async dispatch => {
+
+    clearTimeout(timer)
+
     dispatch({
       type: 'SET_NOTIFICATION',
       data: content
     })
-    setTimeout(() => {
+
+    timer = setTimeout(() => {
       dispatch({
         type: 'CLEAR_NOTIFICATION'
       })
