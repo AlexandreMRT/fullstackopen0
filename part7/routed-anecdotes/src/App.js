@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-import Menu from './pages/Menu';
 import AnecdoteList from './pages/AnecdoteList';
 import About from './pages/About';
 import Footer from './pages/Footer';
 import CreateNew from './pages/CreateNew';
+import Anecdote from './pages/Anecdote';
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -59,13 +59,20 @@ const App = () => {
         <Route exact path="/">
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
+
         <Route path="/create">
           <CreateNew addNew={addNew} />
         </Route>
+
         <Route path="/about">
           <About />
         </Route>
+
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdotes={anecdotes} />
+        </Route>
       </Switch>
+
       <Footer />
     </Router>
   )
