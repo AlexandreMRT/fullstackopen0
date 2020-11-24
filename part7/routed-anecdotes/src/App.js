@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom"
 import AnecdoteList from './pages/AnecdoteList';
 import About from './pages/About';
 import Footer from './pages/Footer';
@@ -29,6 +29,10 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`a new anecdote ${anecdote.content} created!`)
+    setTimeout(() => {
+      setNotification('')
+    }, 3000)
   }
 
   const anecdoteById = (id) =>
@@ -54,6 +58,7 @@ const App = () => {
         <Link style={{paddingRight: 5}} to="/create">create new</Link>
         <Link style={{paddingRight: 5}} to="/about">about</Link>
       </div>
+      <div>{notification}</div>
 
       <Switch>
         <Route exact path="/">
