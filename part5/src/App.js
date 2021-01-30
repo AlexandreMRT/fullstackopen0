@@ -7,6 +7,8 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import './index.css'
 import Togglable from './components/Togglable'
+import { setNotification } from './reducers/NotificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,8 +16,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [message, setMessage] = useState(null)
   const blogFormRef = useRef()
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -89,11 +92,8 @@ const App = () => {
 
       blogService.setToken(user.token)
       if (blog) {
-        setMessage(`A new blog ${blog.title} by ${blog.author} added.`)
+        dispatch(setNotification(`a new blog '${blog.title}' by ${blog.author} added.`, 'success', 5))
         setBlogs(blogs.concat(blog))
-        setTimeout(() => {
-          setMessage(null)
-        }, 3000)
       }
     } catch (exception) {
       setErrorMessage('Wrong Credentials')
@@ -134,8 +134,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={errorMessage} type={'error'} />
-      <Notification message={message} type={'success'} />
+      <Notification />
 
       {user === null ?
         loginForm() :
