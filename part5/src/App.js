@@ -15,7 +15,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const blogFormRef = useRef()
 
   const dispatch = useDispatch()
@@ -43,10 +42,7 @@ const App = () => {
         await blogService.remove(deletedBlog.id)
         setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
       } catch (exception) {
-        setErrorMessage('You can\'t delete this blog!')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 3000)
+        dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
       }
     }
   }
@@ -77,10 +73,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong password or username')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
+      dispatch(setNotification('Wrong password or username', 'error', 5))
     }
   }
 
@@ -96,10 +89,7 @@ const App = () => {
         setBlogs(blogs.concat(blog))
       }
     } catch (exception) {
-      setErrorMessage('Wrong Credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
+      dispatch(setNotification('Wrong Credentials!'), 'error', 5)
     }
   }
 
