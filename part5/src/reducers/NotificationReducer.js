@@ -1,3 +1,5 @@
+//action creators
+
 export const setNotification = (content, type, time) => {
   return async dispatch => {
     dispatch({
@@ -11,6 +13,9 @@ export const setNotification = (content, type, time) => {
     }, time * 1000)
   }
 }
+
+//selectors
+export const getNotification = (state) => state.notifications
 
 const NotificationReducer = (state = null, action) => {
   switch (action.type) {

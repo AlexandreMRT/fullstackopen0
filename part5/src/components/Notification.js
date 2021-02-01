@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { getNotification } from '../reducers/NotificationReducer'
 
 const Notification = () => {
-  const notification = useSelector(state => state.notifications)
+  const notification = useSelector(getNotification)
 
   if (!notification) {
     return null
