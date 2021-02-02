@@ -10,17 +10,28 @@ export const addBlog = (data) => {
   }
 }
 
-const BlogsReducer = (state = null, action) => {
-  switch (action.type) {
-  case 'NEW_BLOG':
+export const initializeBlogs = () => {
+  return async dispatch => {
+    const blogs = await blogService.getAll()
+    dispatch({
+      type: 'INIT_BLOGS',
+      data: blogs,
+    })
+  }
+}
+
+//selectors
+export const getBlogs = (state) => state.blogs
+
+const BlogsReducer = (state = [], action) => {
+  switch(action.type) {
+  case 'NEW_ANECDOTE':
+    return [...state, action.data]
+  case 'INIT_BLOGS':
     return action.data
-  case 'CLEAR_NOTIFICATION':
-    return null
   default:
     return state
   }
 }
-
-
 
 export default BlogsReducer
