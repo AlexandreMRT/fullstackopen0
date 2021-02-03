@@ -8,7 +8,9 @@ import BlogForm from './components/BlogForm'
 import './index.css'
 import Togglable from './components/Togglable'
 import { setNotification } from './reducers/NotificationReducer'
-import { useDispatch } from 'react-redux'
+import { initializeBlogs } from './reducers/BlogsReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBlogs } from './reducers/BlogsReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -19,10 +21,10 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((a, b) => b.likes - a.likes) )
-    )
-  }, [])
+    dispatch(initializeBlogs())
+  },[dispatch])
+
+  const tempBlogs = useSelector(getBlogs)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
@@ -135,7 +137,7 @@ const App = () => {
       <h2>Blog List</h2>
       <div className="blogs-container" >
         {
-          blogs.map(blog =>
+          tempBlogs.sort((a, b) => b.likes - a.likes).map(blog =>
             <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} handleDelete={() => handleDelete(blog.id)} />
           )}
       </div>
