@@ -10,7 +10,7 @@ import Togglable from './components/Togglable'
 import { setNotification } from './reducers/NotificationReducer'
 import { initializeBlogs } from './reducers/BlogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBlogs } from './reducers/BlogsReducer'
+import { getBlogs, createNewBlog } from './reducers/BlogsReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -82,12 +82,11 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     try {
-      const blog = await blogService.create(blogObject)
+      const blog = dispatch(createNewBlog(blogObject))
 
       blogService.setToken(user.token)
       if (blog) {
         dispatch(setNotification(`a new blog '${blog.title}' by ${blog.author} added.`, 'success', 5))
-        setBlogs(blogs.concat(blog))
       }
     } catch (exception) {
       dispatch(setNotification('Wrong Credentials!'), 'error', 5)
