@@ -11,12 +11,12 @@ import { setNotification } from './reducers/NotificationReducer'
 import { initializeBlogs } from './reducers/BlogsReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { getBlogs, createNewBlog } from './reducers/BlogsReducer'
+import { setUser, getUser, userLogOut } from './reducers/UserReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
@@ -26,12 +26,14 @@ const App = () => {
 
   const tempBlogs = useSelector(getBlogs)
 
+  const user = useSelector(getUser)
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      const userJson = JSON.parse(loggedUserJSON)
+      dispatch(setUser(userJson))
+      blogService.setToken(userJson.token)
     }
   }, [])
 
@@ -61,16 +63,16 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({
+      const userObject = await loginService.login({
         username, password,
       })
 
       window.localStorage.setItem(
-        'loggedBlogUser', JSON.stringify(user)
+        'loggedBlogUser', JSON.stringify(userObject)
       )
 
-      blogService.setToken(user.token)
-      setUser(user)
+      blogService.setToken(userObject.token)
+      dispatch(setUser(userObject))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -85,8 +87,9 @@ const App = () => {
       const blog = dispatch(createNewBlog(blogObject))
 
       blogService.setToken(user.token)
+
       if (blog) {
-        dispatch(setNotification(`a new blog '${blog.title}' by ${blog.author} added.`, 'success', 5))
+        dispatch(setNotification(`a new blog '${blogObject.title}' by ${blogObject.author} added.`, 'success', 5))
       }
     } catch (exception) {
       dispatch(setNotification('Wrong Credentials!'), 'error', 5)
@@ -96,7 +99,7 @@ const App = () => {
   const handleLogOut = async (event)  => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogUser')
-    setUser(null)
+    dispatch(userLogOut())
   }
 
   const blogForm = () => (
