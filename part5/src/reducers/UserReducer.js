@@ -1,6 +1,6 @@
 //action creators
 
-export const setJwtUser = (user) => {
+export const setUser = (user) => {
   return async dispatch => {
     dispatch({
       type: 'SET_USER',
