@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog } from '../reducers/BlogsReducer'
 
-const Blog = ({ blog, handleLike, handleDelete }) => {
+const Blog = ({ blog, handleDelete }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const handleLike = async ( blog ) => {
+    dispatch(likeBlog(blog))
   }
 
   const blogStyle = {
