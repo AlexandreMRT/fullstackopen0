@@ -50,16 +50,6 @@ const App = () => {
     }
   }
 
-  const handleLike = async ( id ) => {
-    const blog = blogs.find(blog => blog.id === id)
-    const likedBlog = { ...blog,
-      likes: blog.likes + 1 }
-
-    const response = await blogService.update(id, likedBlog)
-
-    if (response) setBlogs((blogs.map(blog => blog.id !== id ? blog : likedBlog).sort((a, b) => b.likes - a.likes)))
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -140,7 +130,7 @@ const App = () => {
       <div className="blogs-container" >
         {
           tempBlogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog.id)} handleDelete={() => handleDelete(blog.id)} />
+            <Blog key={blog.id} blog={blog} handleDelete={() => handleDelete(blog.id)} />
           )}
       </div>
     </div>
