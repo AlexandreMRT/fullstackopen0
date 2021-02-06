@@ -1,5 +1,5 @@
-import blogs from '../services/blogs'
 import blogService from '../services/blogs'
+import { setNotification } from './NotificationReducer'
 
 export const likeBlog = (blog) => {
   return async dispatch => {
@@ -14,6 +14,9 @@ export const likeBlog = (blog) => {
 export const createNewBlog = (data) => {
   return async dispatch => {
     const newBlog = await blogService.create(data)
+    if (newBlog) {
+      dispatch(setNotification(`a new blog '${newBlog.title}' by ${newBlog.author} added.`, 'success', 5))
+    }
     dispatch({
       type: 'NEW_BLOG',
       data: newBlog,
