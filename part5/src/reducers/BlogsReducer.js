@@ -48,7 +48,7 @@ const BlogsReducer = (state = [], action) => {
       likes: blogToChange.likes + 1
     }
     return state.map(blog =>
-      blogs.id !== id ? blog : changedBlog
+      blog.id !== id ? blog : changedBlog
     )
   }
   default:
