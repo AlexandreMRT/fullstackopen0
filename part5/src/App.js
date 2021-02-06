@@ -35,7 +35,7 @@ const App = () => {
       dispatch(setUser(userJson))
       blogService.setToken(userJson.token)
     }
-  }, [])
+  }, [dispatch])
 
   const handleDelete = async (id) => {
     const deletedBlog = blogs.find(blog => blog.id === id)
@@ -74,13 +74,10 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     try {
-      const blog = dispatch(createNewBlog(blogObject))
+      dispatch(createNewBlog(blogObject))
 
       blogService.setToken(user.token)
 
-      if (blog) {
-        dispatch(setNotification(`a new blog '${blogObject.title}' by ${blogObject.author} added.`, 'success', 5))
-      }
     } catch (exception) {
       dispatch(setNotification('Wrong Credentials!'), 'error', 5)
     }
