@@ -1,4 +1,15 @@
+import blogs from '../services/blogs'
 import blogService from '../services/blogs'
+
+export const likeBlog = (blog) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.update({ ...blog, likes: blog.likes + 1 })
+    dispatch({
+      type: 'LIKE_BLOG',
+      data: updatedBlog,
+    })
+  }
+}
 
 export const createNewBlog = (data) => {
   return async dispatch => {
@@ -29,6 +40,17 @@ const BlogsReducer = (state = [], action) => {
     return [...state, action.data]
   case 'INIT_BLOGS':
     return action.data
+  case 'LIKE_BLOG': {
+    const id = action.data.id
+    const blogToChange = state.find(n => n.id === id)
+    const changedBlog = {
+      ...blogToChange,
+      likes: blogToChange.likes + 1
+    }
+    return state.map(blog =>
+      blogs.id !== id ? blog : changedBlog
+    )
+  }
   default:
     return state
   }
