@@ -14,7 +14,6 @@ import { getBlogs, createNewBlog } from './reducers/BlogsReducer'
 import { setUser, getUser, userLogOut } from './reducers/UserReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const blogFormRef = useRef()
@@ -36,19 +35,6 @@ const App = () => {
       blogService.setToken(userJson.token)
     }
   }, [dispatch])
-
-  const handleDelete = async (id) => {
-    const deletedBlog = blogs.find(blog => blog.id === id)
-
-    if(window.confirm('Delete the item?')) {
-      try{
-        await blogService.remove(deletedBlog.id)
-        setBlogs(blogs.filter(blog => blog.id !== deletedBlog.id))
-      } catch (exception) {
-        dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
-      }
-    }
-  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -127,7 +113,7 @@ const App = () => {
       <div className="blogs-container" >
         {
           tempBlogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} handleDelete={() => handleDelete(blog.id)} />
+            <Blog key={blog.id} blog={blog} />
           )}
       </div>
     </div>
