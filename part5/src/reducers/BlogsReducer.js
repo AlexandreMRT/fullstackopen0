@@ -1,6 +1,15 @@
 import blogService from '../services/blogs'
 import { setNotification } from './NotificationReducer'
 
+export const deleteBlog = (blog) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.remove(blog.id)
+    dispatch({
+      type: 'DELETE_BLOG',
+    })
+  }
+}
+
 export const likeBlog = (blog) => {
   return async dispatch => {
     const updatedBlog = await blogService.update({ ...blog, likes: blog.likes + 1 })
