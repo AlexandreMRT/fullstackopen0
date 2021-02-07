@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { likeBlog } from '../reducers/BlogsReducer'
+import { likeBlog, deleteBlog } from '../reducers/BlogsReducer'
+import { setNotification } from '../reducers/NotificationReducer'
 
-const Blog = ({ blog, handleDelete }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
 
@@ -12,6 +13,18 @@ const Blog = ({ blog, handleDelete }) => {
 
   const handleLike = async ( blog ) => {
     dispatch(likeBlog(blog))
+  }
+
+  const handleDelete = async (id) => {
+    // const deletedBlog = blogs.find(blog => blog.id === id)
+
+    if(window.confirm('Delete the item?')) {
+      try{
+        dispatch(deleteBlog(blog.id))
+      } catch (exception) {
+        dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
+      }
+    }
   }
 
   const blogStyle = {
