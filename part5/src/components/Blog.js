@@ -15,12 +15,10 @@ const Blog = ({ blog }) => {
     dispatch(likeBlog(blog))
   }
 
-  const handleDelete = async (id) => {
-    // const deletedBlog = blogs.find(blog => blog.id === id)
-
+  const handleDelete = async (blog) => {
     if(window.confirm('Delete the item?')) {
       try{
-        dispatch(deleteBlog(blog.id))
+        dispatch(deleteBlog(blog))
       } catch (exception) {
         dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
       }
