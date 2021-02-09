@@ -3,9 +3,10 @@ import { setNotification } from './NotificationReducer'
 
 export const deleteBlog = (blog) => {
   return async dispatch => {
-    const updatedBlog = await blogService.remove(blog.id)
+    await blogService.remove(blog.id)
     dispatch({
       type: 'DELETE_BLOG',
+      data: blog
     })
   }
 }
@@ -52,6 +53,11 @@ const BlogsReducer = (state = [], action) => {
     return [...state, action.data]
   case 'INIT_BLOGS':
     return action.data
+  case 'DELETE_BLOG': {
+    const id = action.data.id
+    const deletedBlog = state.find(blog => blog.id === id)
+    return state.filter(blog => blog.id !== deletedBlog.id)
+  }
   case 'LIKE_BLOG': {
     const id = action.data.id
     const blogToChange = state.find(n => n.id === id)
