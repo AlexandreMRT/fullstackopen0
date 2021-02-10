@@ -16,12 +16,8 @@ const Blog = ({ blog }) => {
   }
 
   const handleDelete = async (blog) => {
-    if(window.confirm('Delete the item?')) {
-      try{
-        dispatch(deleteBlog(blog))
-      } catch (exception) {
-        dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
-      }
+    if (window.confirm('Delete the item?')) {
+      dispatch(deleteBlog(blog))
     }
   }
 
