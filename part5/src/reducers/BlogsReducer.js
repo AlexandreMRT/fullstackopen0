@@ -3,11 +3,16 @@ import { setNotification } from './NotificationReducer'
 
 export const deleteBlog = (blog) => {
   return async dispatch => {
-    await blogService.remove(blog.id)
-    dispatch({
-      type: 'DELETE_BLOG',
-      data: blog
-    })
+    try {
+      await blogService.remove(blog.id)
+      dispatch({
+        type: DELETE_BLOG,
+        data: blog
+      })
+    }
+    catch(error) {
+      dispatch(setNotification('You can\'t delete this blog!', 'error', 5))
+    }
   }
 }
 

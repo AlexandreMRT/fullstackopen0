@@ -68,7 +68,7 @@ describe('Blog app', function() {
       cy.get('#author').type('Blog author')
       cy.get('#url').type('blogurl.com.br')
       cy.get('#create-button').click()
-      cy.contains('A new blog Blog title by Blog author added.')
+      cy.contains('A new blog \'Blog title\' by Blog author added.' )
     })
 
     describe('And a blog exists', function() {
