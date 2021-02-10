@@ -20,7 +20,7 @@ export const likeBlog = (blog) => {
   return async dispatch => {
     const updatedBlog = await blogService.update({ ...blog, likes: blog.likes + 1 })
     dispatch({
-      type: 'LIKE_BLOG',
+      type: LIKE_BLOG,
       data: updatedBlog,
     })
   }
@@ -30,10 +30,10 @@ export const createNewBlog = (data) => {
   return async dispatch => {
     const newBlog = await blogService.create(data)
     if (newBlog) {
-      dispatch(setNotification(`a new blog '${newBlog.title}' by ${newBlog.author} added.`, 'success', 5))
+      dispatch(setNotification(`A new blog '${newBlog.title}' by ${newBlog.author} added.`, 'success', 5))
     }
     dispatch({
-      type: 'NEW_BLOG',
+      type: NEW_BLOG,
       data: newBlog,
     })
   }
@@ -43,11 +43,17 @@ export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
     dispatch({
-      type: 'INIT_BLOGS',
+      type: INIT_BLOGS,
       data: blogs,
     })
   }
 }
+
+//action types
+export const NEW_BLOG = 'NEW_BLOG'
+export const INIT_BLOGS = 'INIT_BLOGS'
+export const DELETE_BLOG = 'DELETE_BLOG'
+export const LIKE_BLOG = 'LIKE_BLOG'
 
 //selectors
 export const getBlogs = (state) => state.blogs
