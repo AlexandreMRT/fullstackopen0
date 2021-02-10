@@ -3,7 +3,7 @@
 export const setUser = (user) => {
   return async dispatch => {
     dispatch({
-      type: 'SET_USER',
+      type: SET_USER,
       data: user
     })
   }
@@ -12,10 +12,14 @@ export const setUser = (user) => {
 export const userLogOut = () => {
   return async dispatch => {
     dispatch({
-      type: 'CLEAR_USER'
+      type: CLEAR_USER
     })
   }
 }
+
+//action types
+export const SET_USER = 'SET_USER'
+export const CLEAR_USER = 'CLEAR_USER'
 
 //selectors
 export const getUser = (state) => state.user
