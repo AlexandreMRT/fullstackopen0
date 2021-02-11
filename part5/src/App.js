@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import BlogList from './components/BlogList/BlogList'
-import User from './components/User'
+import Users from './components/Users'
 
 const App = () => {
   return(
@@ -17,7 +17,7 @@ const App = () => {
         </Route>
 
         <Route path="/users">
-          <User />
+          <Users />
         </Route>
       </Switch>
     </Router>
