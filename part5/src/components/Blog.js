@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/BlogsReducer'
-import { setNotification } from '../reducers/NotificationReducer'
 
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
