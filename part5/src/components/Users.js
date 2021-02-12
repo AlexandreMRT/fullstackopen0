@@ -12,26 +12,30 @@ const Users = () => {
 
   const users = useSelector(getUsers)
 
-  const userStyle = {
-    paddingLeft: 170,
-    marginBottom: 5,
-    fontWeight: 'bold'
-  }
-
   return (
-    <div>
+    <>
       <h2>Users</h2>
-      <p style={userStyle}>blogs created</p>
-      <ul>
-        {
-          users.sort((a, b) => b.blogs.length - a.blogs.length).map(user =>
-            <li key={user.id}>
-              <Link to={`/users/${user.id}`}>{user.name}</Link><div>{user.blogs.length}</div>
-            </li>
-          )
-        }
-      </ul>
-    </div>
+      <table>
+        <tbody>
+          <tr>
+            <th></th>
+            <th>blogs created</th>
+          </tr>
+          {
+            users.sort((a, b) => b.blogs.length - a.blogs.length).map(user =>
+              <tr key={user.id}>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
+                <td>{user.blogs.length}</td>
+              </tr>
+            )
+          }
+
+        </tbody>
+      </table>
+    </>
+
   )
 }
 
