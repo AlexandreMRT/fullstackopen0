@@ -1,10 +1,26 @@
 import React from 'react'
+import { useParams } from 'react-router-dom'
 
-const User = ({ user }) => {
+const User = ({ users }) => {
+
+  const id = useParams().id
+  const user = users.find(n => n.id === id)
+
+  if (!user) {
+    return null
+  }
 
   return (
     <div>
-      {user.name} {user.blogs.length}
+      <h1>{user.name}</h1>
+      <h2>added blogs</h2>
+      <ul>
+        {
+          user.blogs.map(blog => {
+            console.log(blog.title)
+          })
+        }
+      </ul>
     </div>
   )
 }
