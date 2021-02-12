@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { getUsers, initializeUsers } from '../reducers/UsersReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import User from './User/User'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 const Users = () => {
   const dispatch = useDispatch()
@@ -13,7 +13,7 @@ const Users = () => {
   const users = useSelector(getUsers)
 
   const userStyle = {
-    paddingLeft: 150,
+    paddingLeft: 170,
     marginBottom: 5,
     fontWeight: 'bold'
   }
@@ -22,13 +22,15 @@ const Users = () => {
     <div>
       <h2>Users</h2>
       <p style={userStyle}>blogs created</p>
-      <div>
+      <ul>
         {
           users.sort((a, b) => b.blogs.length - a.blogs.length).map(user =>
-            <User key={user.id} user={user} />
+            <li key={user.id}>
+              <Link to={`/users/${user.id}`}>{user.name}</Link><div>{user.blogs.length}</div>
+            </li>
           )
         }
-      </div>
+      </ul>
     </div>
   )
 }
