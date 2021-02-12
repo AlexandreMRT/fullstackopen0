@@ -6,17 +6,13 @@ const User = ({ users }) => {
   const id = useParams().id
   const user = users.find(n => n.id === id)
 
-  if (!user) {
-    return null
-  }
-
   return (
     <div>
-      <h1>{user.name}</h1>
+      <h1>{user?.name}</h1>
       <h2>added blogs</h2>
       <ul>
         {
-          user.blogs.map(blog => {
+          user?.blogs.map(blog => {
             console.log(blog.title)
           })
         }
