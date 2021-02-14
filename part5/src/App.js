@@ -19,7 +19,7 @@ const App = () => {
   return(
     <Router>
       <div>
-        <Link to="/">Home</Link>
+        <Link style={{ paddingRight: 5 }} to="/">Home</Link>
         <Link to="/users">Users</Link>
       </div>
 
