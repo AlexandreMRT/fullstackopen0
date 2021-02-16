@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import BlogList from './components/BlogList/BlogList'
 import Users from './components/Users'
 import { initializeUsers, getUsers } from './reducers/UsersReducer'
+import { getBlogs } from './reducers/BlogsReducer'
 import User from './components/User/User'
 
 const App = () => {
@@ -15,6 +16,8 @@ const App = () => {
   },[dispatch])
 
   const users = useSelector(getUsers)
+
+  const blogs = useSelector(getBlogs)
 
   return(
     <Router>
@@ -34,6 +37,10 @@ const App = () => {
 
         <Route path="/users/:id">
           <User users={users} />
+        </Route>
+
+        <Route path="/blogs/:id">
+          <User blogs={blogs} />
         </Route>
       </Switch>
     </Router>
