@@ -12,7 +12,7 @@ import { setNotification } from '../../reducers/NotificationReducer'
 import { initializeBlogs } from '../../reducers/BlogsReducer'
 import { getBlogs, createNewBlog } from '../../reducers/BlogsReducer'
 import { setUser, getUser, userLogOut } from '../../reducers/UserReducer'
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 const BlogList = () => {
   const [username, setUsername] = useState('')
@@ -99,10 +99,9 @@ const BlogList = () => {
   }
 
   return (
-    <div>
+    <>
       <h2>Blogs</h2>
       <Notification />
-
       {user === null ?
         loginForm() :
         <div>
@@ -111,14 +110,21 @@ const BlogList = () => {
         </div>
       }
       <h2>Blog List</h2>
-      <div className="blogs-container" >
-        {
-          blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )
-        }
-      </div>
-    </div>
+
+      <table>
+        <tbody>
+          {
+            blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+              <tr key={user.id}>
+                <td>
+                  <Link key={blog.id} to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                </td>
+              </tr>
+            )
+          }
+        </tbody>
+      </table>
+    </>
   )
 }
 

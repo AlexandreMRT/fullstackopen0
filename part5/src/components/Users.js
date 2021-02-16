@@ -31,11 +31,9 @@ const Users = () => {
               </tr>
             )
           }
-
         </tbody>
       </table>
     </>
-
   )
 }
 
