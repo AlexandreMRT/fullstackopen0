@@ -59,7 +59,7 @@ const Blog = ({ blogs }) => {
       <h3>comments</h3>
       <ul>
         {blog?.comments?.map((comment, index) => {
-          return <li key={index}>{comment.title}</li>
+          return <li key={index}>{comment}</li>
         })}
       </ul>
       {/* {visible ?
