@@ -1,20 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/BlogsReducer'
 import { useParams, useHistory } from 'react-router-dom'
+import  CommentForm  from '../components/CommentForm'
 
 
 const Blog = ({ blogs }) => {
-  const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
   const history = useHistory()
 
   const id = useParams().id
   const blog = blogs.find(n => n.id === id)
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
 
   const handleLike = async ( blog ) => {
     dispatch(likeBlog(blog))
@@ -57,27 +53,12 @@ const Blog = ({ blogs }) => {
       <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>Remove</button>
 
       <h3>comments</h3>
+      <CommentForm blogId={blog?.id} />
       <ul>
         {blog?.comments?.map((comment, index) => {
           return <li key={index}>{comment}</li>
         })}
       </ul>
-      {/* {visible ?
-        <div style={blogStyle}>
-          {blog.title} {blog.author} <button onClick={toggleVisibility}>Hide</button>
-          <br />
-          {blog.url}
-          <br />
-            Likes: {blog.likes} <button id="like-button" onClick={() => handleLike(blog)}>Like</button>
-          <br />
-          {blog.user.username}
-          <br />
-          <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>Remove</button>
-        </div> :
-        <div style={blogStyle}>
-          {blog.title} {blog.author} <button id="show-button" onClick={toggleVisibility}>Show</button>
-        </div>
-      } */}
     </>
   )
 }
