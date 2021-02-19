@@ -1,7 +1,11 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { getUsers } from '../../reducers/UsersReducer'
 
-const User = ({ users }) => {
+const User = () => {
+
+  const users = useSelector(getUsers)
 
   const id = useParams().id
   const user = users.find(n => n.id === id)
