@@ -1,6 +1,17 @@
 import blogService from '../services/blogs'
 import { setNotification } from './NotificationReducer'
 
+export const commentBlog = (comment, blogId) => {
+
+  return async dispatch => {
+    const updatedBlog = await blogService.addComment( { comment }, blogId )
+    dispatch({
+      type: ADD_COMMENT,
+      data: updatedBlog
+    })
+  }
+}
+
 export const deleteBlog = (blog) => {
   return async dispatch => {
     try {
@@ -54,6 +65,7 @@ export const NEW_BLOG = 'NEW_BLOG'
 export const INIT_BLOGS = 'INIT_BLOGS'
 export const DELETE_BLOG = 'DELETE_BLOG'
 export const LIKE_BLOG = 'LIKE_BLOG'
+export const ADD_COMMENT = 'ADD_COMMENT'
 
 //selectors
 export const getBlogs = (state) => state.blogs
@@ -75,6 +87,17 @@ const BlogsReducer = (state = [], action) => {
     const changedBlog = {
       ...blogToChange,
       likes: blogToChange.likes + 1
+    }
+    return state.map(blog =>
+      blog.id !== id ? blog : changedBlog
+    )
+  }
+  case 'ADD_COMMENT': {
+    const id = action.data.id
+    const blogToChange = state.find(n => n.id === id)
+    const changedBlog = {
+      ...blogToChange,
+      comments: action.data.comments
     }
     return state.map(blog =>
       blog.id !== id ? blog : changedBlog
