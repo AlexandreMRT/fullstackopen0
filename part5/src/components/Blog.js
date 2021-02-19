@@ -1,11 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { likeBlog, deleteBlog } from '../reducers/BlogsReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { likeBlog, deleteBlog, getBlogs } from '../reducers/BlogsReducer'
 import { useParams, useHistory } from 'react-router-dom'
 import  CommentForm  from '../components/CommentForm'
 
 
-const Blog = ({ blogs }) => {
+const Blog = () => {
+  const blogs = useSelector(getBlogs)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -23,14 +24,6 @@ const Blog = ({ blogs }) => {
     }
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   const removeButtonStyle = {
     backgroundColor: 'blue',
     borderRadius: '5px',
@@ -41,10 +34,6 @@ const Blog = ({ blogs }) => {
   return (
     <>
       <h2>blog app</h2>
-
-      <div>
-
-      </div>
 
       <h1>{blog?.title}</h1>
       <a href={blog?.url}>{blog?.url}</a>
