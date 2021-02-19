@@ -26,9 +26,7 @@ const App = () => {
     dispatch(initializeUsers())
   },[dispatch])
 
-  const users = useSelector(getUsers)
   const user = useSelector(getUser)
-  const blogs = useSelector(getBlogs)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -136,11 +134,11 @@ const App = () => {
         </Route>
 
         <Route path="/users/:id">
-          <User users={users} />
+          <User />
         </Route>
 
         <Route path="/blogs/:id">
-          <Blog blogs={blogs} />
+          <Blog />
         </Route>
       </Switch>
     </Router>
