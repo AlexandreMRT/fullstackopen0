@@ -4,7 +4,6 @@ import { likeBlog, deleteBlog, getBlogs } from '../reducers/BlogsReducer'
 import { useParams, useHistory } from 'react-router-dom'
 import  CommentForm  from '../components/CommentForm'
 
-
 const Blog = () => {
   const blogs = useSelector(getBlogs)
   const dispatch = useDispatch()

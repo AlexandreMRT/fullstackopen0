@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import { getUsers } from '../../reducers/UsersReducer'
 
 const User = () => {
-
   const users = useSelector(getUsers)
 
   const id = useParams().id
