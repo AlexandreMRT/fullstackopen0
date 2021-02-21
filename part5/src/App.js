@@ -19,7 +19,6 @@ import { initializeBlogs } from './reducers/BlogsReducer'
 import { setUser, getUser, userLogOut } from './reducers/UserReducer'
 
 const App = () => {
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -35,8 +34,6 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
   },[dispatch])
-
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
