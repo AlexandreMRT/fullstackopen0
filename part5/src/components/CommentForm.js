@@ -6,9 +6,7 @@ import { useField } from '../hooks/useField'
 
 const CommentForm = ({ blogId }) => {
   const dispatch = useDispatch()
-
   const comment = useField('text')
-
   const useFieldWithoutReset = (({ reset, ...rest }) => rest)
 
   const handleCommentSubmit = (event) => {
