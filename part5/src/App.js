@@ -107,37 +107,40 @@ const App = () => {
 
   return(
     <Router>
-      <div>
-        <h2>Blogs</h2>
-        <Link style={{ paddingRight: 5 }} to="/">Home</Link>
+      <header className="header-menu">
+        <Link to="/">Home</Link>
         <Link to="/users">Users</Link>
-        <Notification />
         {user === null ?
           loginForm() :
           <div>
-            <p>{user.name} Logged in.<button onClick={handleLogOut}>Log Out</button></p>
-            {blogForm()}
+            <p>{user.name} Logged in. <button onClick={handleLogOut}>Log Out</button></p>
           </div>
         }
+      </header>
+      <div className="main">
+        <h2>Blogs</h2>
+        <Notification />
+        {blogForm()}
       </div>
+      <div className="routes-container" >
+        <Switch>
+          <Route exact path="/">
+            <BlogList />
+          </Route>
 
-      <Switch>
-        <Route exact path="/">
-          <BlogList />
-        </Route>
+          <Route exact path="/users">
+            <Users />
+          </Route>
 
-        <Route exact path="/users">
-          <Users />
-        </Route>
+          <Route path="/users/:id">
+            <User />
+          </Route>
 
-        <Route path="/users/:id">
-          <User />
-        </Route>
-
-        <Route path="/blogs/:id">
-          <Blog />
-        </Route>
-      </Switch>
+          <Route path="/blogs/:id">
+            <Blog />
+          </Route>
+        </Switch>
+      </div>
     </Router>
   )
 }
