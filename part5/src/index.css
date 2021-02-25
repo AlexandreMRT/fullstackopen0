@@ -17,3 +17,23 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.header-menu {
+  display: flex;
+  align-items: center;
+  margin: 0 40%;
+}
+
+.header-menu a {
+  padding-right: 5px;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  margin: 0 40%;
+}
+
+.main h2 {
+  padding-right: 5%;
+}
