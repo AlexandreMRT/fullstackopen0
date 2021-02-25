@@ -10,7 +10,6 @@ const BlogList = () => {
 
   return (
     <>
-
       <h2>Blog List</h2>
       <table>
         <tbody>
