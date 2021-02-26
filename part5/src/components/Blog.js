@@ -8,7 +8,6 @@ const Blog = () => {
   const blogs = useSelector(getBlogs)
   const dispatch = useDispatch()
   const history = useHistory()
-
   const id = useParams().id
   const blog = blogs.find(n => n.id === id)
 
@@ -33,7 +32,6 @@ const Blog = () => {
   return (
     <>
       <h2>blog app</h2>
-
       <h1>{blog?.title}</h1>
       <a href={blog?.url}>{blog?.url}</a>
       <p>{blog?.likes} likes <button onClick={() => handleLike(blog)}>like</button></p>
