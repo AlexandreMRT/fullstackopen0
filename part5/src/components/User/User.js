@@ -5,7 +5,7 @@ import { getUsers } from '../../reducers/UsersReducer'
 
 const User = () => {
   const users = useSelector(getUsers)
-  const id = useParams().id
+  const { id } = useParams()
   const user = users.find(n => n.id === id)
 
   return (

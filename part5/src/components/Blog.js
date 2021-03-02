@@ -8,7 +8,7 @@ const Blog = () => {
   const blogs = useSelector(getBlogs)
   const dispatch = useDispatch()
   const history = useHistory()
-  const id = useParams().id
+  const { id } = useParams()
   const blog = blogs.find(n => n.id === id)
 
   const handleLike = async ( blog ) => {
