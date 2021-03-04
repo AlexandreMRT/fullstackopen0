@@ -1,13 +1,17 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { getNotification } from '../reducers/NotificationReducer'
 
-const Notification = ({ message, type }) => {
-  if (message === null) {
+const Notification = () => {
+  const notification = useSelector(getNotification)
+
+  if (!notification) {
     return null
   }
 
   return (
-    <div className={`${type}`}>
-      {message}
+    <div className={`${notification.type}`}>
+      {notification.content}
     </div>
   )
 }

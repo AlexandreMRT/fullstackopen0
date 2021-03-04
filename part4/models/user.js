@@ -30,7 +30,7 @@ userSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
-    //password hash should not be revelead
+    //password hash should not be reveled
     delete returnedObject.passwordHash
   }
 })
