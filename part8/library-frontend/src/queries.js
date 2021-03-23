@@ -9,13 +9,3 @@ export const ALL_AUTHORS = gql`
     }
   }
 `;
-
-export const query = gql`
-  query {
-    allAuthors {
-      name
-      bookCount
-      born
-    }
-  }
-`;
