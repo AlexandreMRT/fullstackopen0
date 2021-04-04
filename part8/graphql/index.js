@@ -112,8 +112,8 @@ const typeDefs = gql`
     title: String!
     published: Int!
     author: String!
-    id: ID!
     genres: [String!]!
+    id: ID!
   }
 
   type Author {
@@ -135,8 +135,8 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
+    bookCount: () => Book.collection.countDocuments(),
+    authorCount: () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
       if (!args.author && !args.genre) {
         return books;
@@ -173,15 +173,17 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: (root, args) => {
-      if (!authors.find((a) => a.name === args.author)) {
+    addBook: async (root, args) => {
+      const author = await Author.findOne({ name: args.author });
+      if (!author) {
         const name = args.author;
-        const author = { name, id: uuid() };
-        authors = authors.concat(author);
+        author = new Author({ name, id: uuid() });
+        author.save();
+        // authors = authors.concat(author);
       }
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
-      return book;
+      const book = new Book({ ...args, author: author, id: uuid() });
+      // books = books.concat(book);
+      return book.save();
     },
     editAuthor: (root, args) => {
       const author = authors.find((a) => a.name === args.name);
