@@ -111,7 +111,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     genres: [String!]!
     id: ID!
   }
@@ -141,7 +141,6 @@ const resolvers = {
       if (!args.author && !args.genre) {
         return books;
       }
-
       if (args.author) {
         return books.filter((b) => {
           return b.author === args.author;
@@ -174,7 +173,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      const author = await Author.findOne({ name: args.author });
+      let author = await Author.findOne({ name: args.author });
       if (!author) {
         const name = args.author;
         author = new Author({ name, id: uuid() });
