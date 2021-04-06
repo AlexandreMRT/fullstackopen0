@@ -132,23 +132,29 @@ const typeDefs = gql`
     editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
+const books = Book.find({}).populate('author', { name: 1 });
+const authors = Author.find({});
 
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
+    allBooks: async (root, args) => {
       if (!args.author && !args.genre) {
         return books;
       }
+      console.log('books :>> ', books);
       if (args.author) {
-        return books.filter((b) => {
-          return b.author === args.author;
-        });
+        console.log('books :>> ', books);
+        return 1;
+        // return books.filter((b) => {
+        //   return b.author === args.author;
+        // });
       } else if (args.genre) {
-        return books.filter((b) => {
-          return b.genres.includes(args.genre) ? !b.genre : b.genre;
-        });
+        return 1;
+        // return books.filter((b) => {
+        //   return b.genres.includes(args.genre) ? !b.genre : b.genre;
+        // });
       }
     },
     allAuthors: () => authors,
@@ -166,9 +172,14 @@ const resolvers = {
   },
   Author: {
     bookCount: (root) => {
-      return books.filter((b) => {
-        return b.author === root.name;
-      }).length;
+      console.log('root.name :>> ', root);
+      const books = Book.collection.countDocuments();
+
+      console.log('books :>> ', books);
+      return 3;
+      // return books.filter((b) => {
+      //   return b.author === root.name;
+      // }).length;
     },
   },
   Mutation: {
