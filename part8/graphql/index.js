@@ -89,15 +89,9 @@ const resolvers = {
     bookCount: (root) => root.bookCount,
   },
   Author: {
-    bookCount: (root) => {
-      console.log('root.name :>> ', root);
-      const books = Book.collection.countDocuments();
-
-      console.log('books :>> ', books);
-      return 3;
-      // return books.filter((b) => {
-      //   return b.author === root.name;
-      // }).length;
+    bookCount: async (root) => {
+      const bookCount = await Book.find({ author: { $in: root.id } });
+      return bookCount.length;
     },
   },
   Mutation: {
