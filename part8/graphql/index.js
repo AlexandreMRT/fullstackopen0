@@ -101,21 +101,32 @@ const resolvers = {
         const name = args.author;
         author = new Author({ name, id: uuid() });
         author.save();
-        // authors = authors.concat(author);
       }
       const book = new Book({ ...args, author: author, id: uuid() });
-      // books = books.concat(book);
       return book.save();
     },
-    editAuthor: (root, args) => {
-      const author = authors.find((a) => a.name === args.name);
+    editAuthor: async (root, args, context) => {
+      const currentUser = context.currentUser;
+
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated');
+      }
+      let author = await Author.findOne({
+        name: args.name,
+      });
+      author.born = args.setBornTo;
+      await author.save();
+      return author;
+    },
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name });
 
       if (!author) {
         return null;
       }
-      const updatedAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((a) => (a.name === args.name ? updatedAuthor : a));
-      return updatedAuthor;
+      author.born = args.setBornTo;
+      await author.save();
+      return author;
     },
   },
 };
