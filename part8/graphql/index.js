@@ -54,8 +54,6 @@ const typeDefs = gql`
     editAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
-const books = Book.find({}).populate('author', { name: 1 });
-const authors = Author.find({});
 
 const resolvers = {
   Query: {
@@ -63,23 +61,21 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (!args.author && !args.genre) {
-        return books;
+        const allBooks = Book.find({}).populate('author', { name: 1 });
+        return allBooks;
       }
-      console.log('books :>> ', books);
       if (args.author) {
-        console.log('books :>> ', books);
+        //WIP
+        const bookCount = await Book.find({ author: { $in: root.id } });
         return 1;
-        // return books.filter((b) => {
-        //   return b.author === args.author;
-        // });
       } else if (args.genre) {
-        return 1;
-        // return books.filter((b) => {
-        //   return b.genres.includes(args.genre) ? !b.genre : b.genre;
-        // });
+        const booksByGenre = await Book.find({
+          genres: { $in: [args.genre] },
+        }).populate('author', { name: 1 });
+        return booksByGenre;
       }
     },
-    allAuthors: () => authors,
+    allAuthors: () => Author.find({}),
   },
   Book: {
     title: (root) => root.title,
